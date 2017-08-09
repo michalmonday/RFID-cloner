@@ -8,7 +8,8 @@
 -3 AA batteries (1.5V each)  
 -switch  
 -cables, hot glue, tape  
-
+-MIFARE 1K RFID card (with changeable UID, 13.56Mhz)
+-some RFID card to copy (only 13.56Mhz cards can be read/written by this particular card reader module)
 
 **Usage of the device:**  
 After turning it on the red LED should be on which just indicates that the device is working. After pressing the button once the yellow light should be on, it indicates that the device is waiting for the card. After the card is read the yellow LED shoud be off. Now we can press the button again and all 3 LEDs should be on, it indicates that the device is waiting for the card, but this time it will write to it instead of reading (green LED = writing).
