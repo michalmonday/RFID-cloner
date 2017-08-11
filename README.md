@@ -11,7 +11,7 @@
 -Arduino Pro Micro 5V 
 > (other Arduino also could be used but with different pinout, see the comments at the top of examples included in [this library](https://github.com/miguelbalboa/rfid/))
 
--MFRC522 RFID reader module 
+-MFRC522 RFID reader module  
 -MIFARE 1K RFID card (with changeable UID, 13.56Mhz)  
 -some RFID card to copy (only 13.56Mhz cards can be read/written by this particular card reader module)  
 -button  
