@@ -17,6 +17,7 @@
 -button  
 -LEDs (red, yellow, green) + resistors (1k ohm)  
 -3 AA batteries (1.5V each)  
+-2 zener diodes (3.7V)  
 -switch  
 -cables, hot glue, tape  
 
