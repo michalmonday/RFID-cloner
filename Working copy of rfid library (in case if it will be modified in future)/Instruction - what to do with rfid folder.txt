@@ -1,0 +1,6 @@
+Copy 'rfid' folder to your 'libraries' folder in the Arduino installation folder, on my PC it's:
+C:\Program Files (x86)\Arduino\libraries
+
+So it should become something like:
+C:\Program Files (x86)\Arduino\libraries\rfid
+

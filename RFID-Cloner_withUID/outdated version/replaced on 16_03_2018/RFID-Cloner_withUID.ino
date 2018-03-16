@@ -17,7 +17,8 @@
  * SPI MOSI    MOSI         11 / ICSP-4   51        D11        ICSP-4           16
  * SPI MISO    MISO         12 / ICSP-1   50        D12        ICSP-1           14
  * SPI SCK     SCK          13 / ICSP-3   52        D13        ICSP-3           15
- *
+
+ 
  */
 
 #define BTN_PIN 9
@@ -31,38 +32,11 @@ byte uidBuff[4];
 
 #include <SPI.h>
 #include <MFRC522.h>
-#include <MFRC522Hack.h>
-//#include <SD.h>
-//File myFile;
-
 
 #define RST_PIN         8           // Configurable, see typical pin layout above
 #define SS_PIN          10          // Configurable, see typical pin layout above
 
 MFRC522 mfrc522(SS_PIN, RST_PIN);   // Create MFRC522 instance.
-MFRC522Hack mfrc522Hack(&mfrc522);  // Create MFRC522Hack instance.
-
-
-
-/*
-//oled
-#include <Wire.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
-
-#define OLED_RESET 4
-#define PIN_PIR_INPUT 5
-
-Adafruit_SSD1306 display(OLED_RESET);
-
-//sd
-
-*/
-
-
-
-
-
 
 byte buffer[18];
 byte block;
@@ -400,7 +374,7 @@ void SaveUID()
 
 void RewriteUID()
 {  
-  if ( mfrc522Hack.MIFARE_SetUid(uidBuff, (byte)4, true) ) {
+  if ( mfrc522.MIFARE_SetUid(uidBuff, (byte)4, true) ) {
     //Serial.println(F("Wrote new UID to card."));
   }
 }
