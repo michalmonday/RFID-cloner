@@ -10,7 +10,7 @@
 
 
 # Parts used 
--Esp8266  
+-NodeMCU (version with CP2102)  
 -RC522 RFID reader module  
 -MIFARE 1K RFID card (with changeable UID, 13.56Mhz)  
 -some RFID card to copy (only 13.56Mhz cards can be read/written by this particular card reader module)  
