@@ -1,0 +1,9 @@
+Copy 'rfid' folder to your 'libraries' folder in the Arduino installation folder, on my PC it's:
+C:\Program Files (x86)\Arduino\libraries
+
+So it should become something like:
+C:\Program Files (x86)\Arduino\libraries\rfid
+
+Do the same with LinkedList.
+ 
+I couldn't find "Esp8266 OLED SSD1306" in libraries folder and I installed it through: Arduno IDE->Sketch->Inlcude library->Manage libraries where I typed and found "Esp8266 and ESP32 Oled Driver for SSD1306 display." (Ver 4.0.0)
