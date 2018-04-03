@@ -83,6 +83,8 @@ private:
   
   void SetMenu(Menu *menu);
   void AddOption(Menu *_menu, MenuOption option);
+  void RemoveOption(Menu *_menu, int option_num);
+  void SetOptionText(Menu *_menu, int option_num, String new_name);
   void AddHorizontalOption(Menu *_menu, MenuOption option);
   void ClearOptions(Menu *_menu);
   void SetOptionName(Menu * _menu, int opt_num, String opt_name){MenuOption mo = _menu->options->get(opt_num); strcpy(mo.text, (char*)opt_name.c_str()); _menu->options->set(opt_num, mo);}

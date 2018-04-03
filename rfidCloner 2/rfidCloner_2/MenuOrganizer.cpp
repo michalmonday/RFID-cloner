@@ -297,14 +297,12 @@ void MenuOrganizer::Init(){
               namePicker.OnSuccess([this](){
                 Serial.println("manageFilesMenu - Rename option - namePicker.OnSuccess");
                   String new_name = namePicker.GetName();
-                  MenuOption mo = menu->options->get(menu->current_option.y);
-                  String old_name = String(mo.text);
+                  String old_name = String(menu->options->get(menu->current_option.y).text);
                   if(files.Rename(old_name , new_name)){
-                    memset(mo.text, 0, MAX_MENU_TEXT); strcpy(mo.text, (char*)new_name.c_str());
-                    menu->options->set(menu->current_option.y, mo);
-                    Notify("Renamed " + old_name + "\ninto" + new_name + "\n(/rfid/" + new_name + ".txt)", 0);
+                    SetOptionText(menu, menu->current_option.y, new_name);
+                    Notify("Renamed " + old_name + "\ninto " + new_name + "\n(/rfid/" + new_name + ".txt)", 0);
                   }else{
-                    Notify("Could not rename " + old_name + "\ninto" + new_name + "\n(/rfid/" + new_name + ".txt)", 0);
+                    Notify("Could not rename " + old_name + "\ninto " + new_name + "\n(/rfid/" + new_name + ".txt)", 0);
                   }
                 });
               
@@ -321,7 +319,7 @@ void MenuOrganizer::Init(){
             /*onAccept*/ [this, file_name](){
               if(files.Remove(file_name)){
                 Notify(1, "Removed " + file_name + "\n(/rfid/" + file_name + ".txt)", 0);
-                menu->options->remove(menu->current_option.y);
+                RemoveOption(menu, menu->current_option.y);
               }else{
                 Notify(1, "Could not remove " + file_name + "\nfor some reason.\n(/rfid/" + file_name + ".txt)", 0);
               }}, 
@@ -344,12 +342,30 @@ void MenuOrganizer::Init(){
   SetMenu(mainMenu);
 }
 
+
+
 void MenuOrganizer::AddOption(Menu *_menu, MenuOption option){
   _menu->len++;
   if(option.active == true){
     _menu->active_len++;
   }
   _menu->options->add(option);
+}
+
+void MenuOrganizer::RemoveOption(Menu *_menu, int option_num){
+  if(option_num < _menu->options->size()){
+    _menu->len--;
+    _menu->active_len--;
+    _menu->options->remove(option_num);
+  }
+}
+
+void MenuOrganizer::SetOptionText(Menu *_menu, int option_num, String new_name){
+  if(option_num < _menu->options->size()){
+    MenuOption mo = _menu->options->get(option_num);
+    memset(mo.text, 0, MAX_MENU_TEXT); strcpy(mo.text, (char*)new_name.c_str());
+    _menu->options->set(_menu->current_option.y, mo);
+  }
 }
 
 void MenuOrganizer::AddHorizontalOption(Menu *_menu, MenuOption option){

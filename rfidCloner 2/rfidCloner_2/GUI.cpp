@@ -202,6 +202,9 @@ void GUI::DrawCenteredString(String str, int font_size, int x, int y){
 */
 
 void GUI::DrawNamePicker(){
+  display.setFont(ArialMT_Plain_10);
+  display.drawString(64, (int)((64.0/3.0)-5.0), "Pick a name");
+  
   display.setTextAlignment(TEXT_ALIGN_CENTER);
   display.setFont(ArialMT_Plain_16);
   
@@ -213,7 +216,7 @@ void GUI::DrawNamePicker(){
   drawnName.concat("|");
   drawnName.concat(n.substring(x));
 
-  display.drawString(64, 32-8, drawnName);
+  display.drawString(64, (int)(((64.0/3.0)*2.0)-8.0), drawnName);
 }
 
 

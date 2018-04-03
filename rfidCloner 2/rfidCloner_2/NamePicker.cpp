@@ -6,8 +6,8 @@ void NamePicker::Update(){
   HandleControls();    
   if(nameStatus == CANCELLED){
     //call func
-    if(strcmp(file_name, "a             \0") != 0){
-      strcpy(file_name, "a             \0");
+    if(strcmp(file_name, "a\0") != 0){
+      strcpy(file_name, "a\0");
       nameStatus = NOT_READY;
       name_picker_x_pos = 0;
     }else{
@@ -24,7 +24,7 @@ void NamePicker::Update(){
 
 void NamePicker::Reset(){
   nameStatus = NOT_READY;
-  strcpy(file_name, "a             \0");
+  strcpy(file_name, "a\0");
   name_picker_x_pos = 0;
 }
 
@@ -35,20 +35,9 @@ String NamePicker::GetName(){
 }
 
 void NamePicker::HandleControls(){
-  int x = name_picker_x_pos;
- 
-    
-  //sprintf(buff, ">%s", file_name);
-  //display.drawString(64, 32-8, buff);
-  
-  //delay((millis() - lastPressTime > 600 && !debounced) ? 90 : 250); // speed up on hold
-
   
   if(int key = buttons.GetLast(true)){ // limiter(normal, hold, threshold)
-    //char buff3[100]={0};
-    //sprintf(buff3, "\nGUI::HandleGettingName:\nmillis() = %d\nlastPressedTime = %d\n!debounced = %d\n\0", millis(), lastPressTime, !debounced);
-    //Serial.println(buff3);
-    
+    int x = name_picker_x_pos;    
       switch(key){
       case BUTTON_YES:
       //format the name properly (remove empty spaces)
@@ -109,13 +98,21 @@ void NamePicker::HandleControls(){
         break;
       case BUTTON_RIGHT:
         x++;
+        
         if(x >= MAX_FILENAME){
           x = 0;
         }
+        //Serial.println("namePicker::HandleControls - button right - strlen(file_name) = " + String(strlen(file_name)) + "; x = " + String(x));
+        if(x >= strlen(file_name)){
+          //Serial.println("x > strlen(file_name)");
+          file_name[x] = 'a'; 
+          file_name[x+1] = '\0'; 
+        }
+
         break;
       default:
         break;
     }
+    name_picker_x_pos = x;
   } 
-  name_picker_x_pos = x;
 }
