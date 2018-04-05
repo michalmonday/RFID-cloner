@@ -32,7 +32,7 @@
 
 # Wiring
 
-| Esp8266 | RFID-RC522 |
+| NodeMCU | RFID-RC522 |
 | --- | --- |
 | D3 | RST |
 | D5 | SPI SS |
@@ -42,13 +42,20 @@
 | GND | GND |
 | 3.3V | 3.3V |
 
-| Esp8266 | SSD1306 128x64 OLED display |
+| NodeMCU | SSD1306 128x64 OLED display |
 | --- | --- |
 | D1 | SDA |
 | D2 | SCL |
 | 3.3V | VCC |
 | GND | GND |
 
+| NodeMCU | Parts | Battery |
+| --- | --- | --- |
+| Vin | Dupont 2-pin connector + Switch | V+ |
+| GND | Dupont 2-pin connector | V- |
+  
+Graph below doesn't show the battery connection and the switch. I'll update it soon.  
+  
 ![](https://i.imgur.com/ScR9LEq.png)
 
 
