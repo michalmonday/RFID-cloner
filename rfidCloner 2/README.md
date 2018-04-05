@@ -54,9 +54,9 @@
 | Vin | Dupont 2-pin connector + Switch | V+ |
 | GND | Dupont 2-pin connector | V- |
   
-Graph below doesn't show the battery connection and the switch. I'll update it soon.  
+(The graph below shows that only 1 3.3V pin was used but other pins could also be used if that's more comfortable to solder. The same applies to GND pins. The battery must be connected to Vin pin though because it has higher voltage ~4.8V and has to go through regulator.)  
   
-![](https://i.imgur.com/ScR9LEq.png)
+![](https://i.imgur.com/qnWrLDe.png)
 
 
 # Credits  
