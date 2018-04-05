@@ -320,6 +320,7 @@ void MenuOrganizer::Init(){
               if(files.Remove(file_name)){
                 Notify(1, "Removed " + file_name + "\n(/rfid/" + file_name + ".txt)", 0);
                 RemoveOption(menu, menu->current_option.y);
+                ShiftCurrentOption(BUTTON_UP);
               }else{
                 Notify(1, "Could not remove " + file_name + "\nfor some reason.\n(/rfid/" + file_name + ".txt)", 0);
               }}, 

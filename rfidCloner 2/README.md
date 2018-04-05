@@ -1,4 +1,5 @@
-![](https://i.imgur.com/Sljwq1J.jpg)
+
+![](https://i.imgur.com/N4BjJwe.jpg)  
 
 [Youtube demo video link](https://www.youtube.com/watch?v=YDx9BJGscPM)  
 
@@ -7,6 +8,7 @@
 * [Required libraries](#required-libraries)  
 * [Wiring](#wiring)  
 * [Credits](#credits) 
+* [Pictures](#pictures)
 
 
 # Parts used 
@@ -17,7 +19,9 @@
 -buttons (6 of them)  
 -resistors (4.7k, 2.2k, 2x1k, 680, 470, 220)  
 -cables  
-(I'm planning to mount all of these on prototyping board and add small, flat, li-po 3.7V battery and a switch when the parts arrive.)  
+-switch  
+-3 AAA batteries (could be 3.7 li-po flat battery or any other battery having over 3.3V that doesn't provide more voltage than NodeMCU can accept using Vin pin)  
+-2 pin dupont connector (for easier battery replacement/removal)    
 
 
 # Required libraries  
@@ -50,5 +54,11 @@
 
 # Credits  
 The creators of libraries and boards/modules used in this project. RFID functionality is based on the [RFID library](https://github.com/miguelbalboa/rfid/) created by Miguel Balboa and other contributors. When trying to implement menu I was relying on the [esp8266_deauther](https://github.com/spacehuhn/esp8266_deauther/blob/master/esp8266_deauther/DisplayUI.cpp) project created by spacehuhn.
+
+# Pictures  
+![](https://i.imgur.com/2CDCzr6.jpg)  
+![](https://i.imgur.com/7RNlH2X.jpg)  
+![](https://i.imgur.com/NA8duDO.jpg)  
+![](https://i.imgur.com/Sljwq1J.jpg)  
 
 
