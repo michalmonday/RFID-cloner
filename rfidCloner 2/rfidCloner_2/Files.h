@@ -23,6 +23,7 @@ public:
   void Init();
 
   bool Write(char *file_name, Card card);
+  bool ReadTo(String file_name, Card *card){return ReadTo((char*)file_name.c_str(), card);}
   bool ReadTo(char *file_name, Card *card);
   void SetTemporaryLastReadFileName(String s);
   String GetTemporaryLastReadFileName(){return temporary_last_read_file_name;}

@@ -18,16 +18,14 @@ extern Buttons buttons;
 #include "Rfid.h"
 extern Rfid rfid;
 
-
-
-
-
-
 #include "NamePicker.h"
 extern NamePicker namePicker;
 
 #include "Notification.h"
 extern Notification notification;
+
+#include "PCinterface.h"
+extern PCinterface pcInterface;
 
 
 struct MenuOption{
@@ -72,11 +70,15 @@ public:
   bool HasHorizontalOptions(Menu *_menu){return (bool)menu->horizontal_options->size();}
   
   String GetHorizontalOptionName(){return String(menu->horizontal_options->get(menu->current_option.x).text);}
+
+  int GetMaxOptionsDisplayed(){return menu->max_options_displayed;}
+  int GetStartingOptionIndex(){return menu->starting_option;}
+  int GetActiveOptionsCount(){return GetActiveOptions().size();}
   
 private:
   Menu *menu;
   Menu *mainMenu = new Menu; 
-  Menu *dirMenu = new Menu; 
+  Menu *pcMenu = new Menu;
 
   Menu *manageFilesMenu = new Menu; 
 

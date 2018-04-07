@@ -118,9 +118,9 @@ void MenuOrganizer::Notify(bool res){
 
 void MenuOrganizer::Init(){  
   mainMenu->parent = mainMenu;
-  dirMenu->parent = mainMenu;
   manageFilesMenu->parent = mainMenu;
-  
+  pcMenu->parent = mainMenu;
+    
   Serial.println("MenuOrganizer::Init - 1");
   AddOption(mainMenu, MenuOption{"Read card\0", true, [this](){
       rfid.RequestReadCard();
@@ -150,41 +150,6 @@ void MenuOrganizer::Init(){
         });  
 
    }});
-
-/*
-  AddOption(mainMenu, MenuOption{"Load from memory\0", true, [this](){        
-        ClearOptions(dirMenu);
-        Dir dir = SPIFFS.openDir("/rfid");
-        int count = 0;
-        while(dir.next() && count < MAX_FILES) {
-          MenuOption opt = MenuOption();
-          strcpy(opt.text, dir.fileName().c_str()+6);
-          opt.text[dir.fileName().length()-10] = '\0';
-          opt.active = true;
-          String file_name = opt.text;
-          opt.function = [this, file_name](){
-                // use its name to open the file
-                Serial.print("Load from memory - dir option picked function - name: "); Serial.println(file_name);
-                int res = rfid.ReadFromFile((char *)file_name.c_str());
-                
-                //DrawResult(res);
-                if(res == true){
-                  ActivateOption(mainMenu, 2);
-                  ActivateOption(mainMenu, 3);
-                  DeactivateOption(mainMenu, 4);
-                  Notify("Loaded successfully\n:)", NOTIFICATION_TIME);
-                }else{
-                  Notify("Failed to load " + file_name + "\n:(", 0);
-                }
-                
-                SetMenu(mainMenu);
-              };
-          AddOption(dirMenu, opt);
-          count++;
-        }
-        SetMenu(dirMenu);
-  }});
-*/    
   
   Serial.println("MenuOrganizer::Init - 2");
   AddOption(mainMenu, MenuOption{"Write card\0", false, [this](){
@@ -333,13 +298,24 @@ void MenuOrganizer::Init(){
         SetMenu(manageFilesMenu);
   }});
 
+
+  /*
+  AddOption(mainMenu, MenuOption{"PC interface\0", true, [this](){
+        ClearOptions(pcMenu);
+        AddOption(pcMenu, MenuOption{"Send card\0", true, [this](){
+          pcInterface.SendCard(String("college"));
+          }});        
+        SetMenu(pcMenu);      
+  }});
+  */
+  
   /*
   AddOption(mainMenu, MenuOption{"example\0", true, [this](){
     
     }
   });
   */
-
+  
   SetMenu(mainMenu);
 }
 

@@ -110,9 +110,10 @@ void GUI::DrawMenu(){
   int cur_opt = 0;
   cur_opt = menuOrganizer.GetCurrentOnScreenOption();
 
+  int x_shift_scroll_indicator = 4 + DrawScrollIndicator(menuOrganizer.GetActiveOptionsCount(), menuOrganizer.GetMaxOptionsDisplayed(), menuOrganizer.GetStartingOptionIndex());
   for(int i = 0; i < names.size(); i++)
   { 
-    int y = i*10+1;
+    int y = i*(10+2) + 1;
     
     String txt = "";
     if(i == cur_opt){
@@ -127,20 +128,26 @@ void GUI::DrawMenu(){
     }else{
       txt = names.get(i);
     }
-    display.drawString(0, y, txt);
+    display.drawString(x_shift_scroll_indicator, y, txt);
   }
 
-  
-
-
-
-  
   //display.setTextAlignment(TEXT_ALIGN_RIGHT);
   //display.drawString(128, 0, String(millis()));
 }
 
-
-
+// return amount of pixels taken horizontally
+int GUI::DrawScrollIndicator(int items_count, int max_items_displayed, int starting_item_index){
+  //Serial.println("GUI::DrawScrollIndicator - items_count = " + String(items_count)+ "; max_items_displayed = " + String(max_items_displayed) + "; starting_item_index = " + String(starting_item_index));
+  if(items_count > max_items_displayed){
+    int width = 5;
+    display.drawRect(0,0, width, 64);
+    uint16_t height = (uint16_t)int(float(max_items_displayed) / float(items_count) * 62.0);
+    uint16_t y_pos = (uint16_t)int(64.0 / float(items_count) * float(starting_item_index));
+    display.fillRect(1, y_pos+1, width-1, height);
+    return width;
+  }
+  return 0;
+}
 
 
 void GUI::DrawRfidBuffer(){

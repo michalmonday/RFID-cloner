@@ -65,6 +65,7 @@ private:
   void DrawRfidBuffer();
   void DrawNamePicker();
   void DrawNotification();
+  int DrawScrollIndicator(int items_count, int max_items, int starting_item_index); // return amount of pixels taken horizontally
 
   //void DrawCenteredString(char * str, int font_size){DrawCenteredString(String(str), font_size);};
   //void DrawCenteredString(String str, int font_size){DrawCenteredString(str, font_size, 64, 32);}; // +2 works well for font_size 10
