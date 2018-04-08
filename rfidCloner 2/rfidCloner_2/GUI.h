@@ -29,6 +29,9 @@ extern MenuOrganizer menuOrganizer;
 #define MODE_MENU 1
 #define MODE_NAME_PICKER 2
 #define MODE_NOTIFICATION 3
+#define MODE_INTRO 4
+
+#define INTRO_LENGTH 1000
 
 
 //typedef void (*Function)(void);
@@ -46,31 +49,24 @@ public:
   
   void SetMode(int m){gui_mode = m;}
 
-private:
-
-  //Menu active_menu;
-  
-  //int menu_len;
-  //int active_menu_len;
-  //XY current_option = {0,0};
-  //int selected = INVALID;
-  //int max_options_displayed_default = 5;
-  //int max_options_displayed = max_options_displayed_default;
-  //int starting_option = 0;
-  //int current_option_relative = 0;
-  
+private:  
   int gui_mode = MODE_MENU;
+  unsigned long init_time = 0;
 
+  void DrawIntro();
   void DrawMenu();
   void DrawRfidBuffer();
   void DrawNamePicker();
   void DrawNotification();
+
+
+  
   int DrawScrollIndicator(int items_count, int max_items, int starting_item_index); // return amount of pixels taken horizontally
+  void DrawBacklight(int x, int y, int width, int font_size);
 
   //void DrawCenteredString(char * str, int font_size){DrawCenteredString(String(str), font_size);};
   //void DrawCenteredString(String str, int font_size){DrawCenteredString(str, font_size, 64, 32);}; // +2 works well for font_size 10
   //void DrawCenteredString(String str, int font_size, int x, int y);
-
   void DrawStringInRect(String txt, int x, int y, int padding, int font_size, OLEDDISPLAY_TEXT_ALIGNMENT alignment);
 };
 

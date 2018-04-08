@@ -2,10 +2,7 @@
 
 SSD1306Wire display(0x3c, D1, D2); // D1 D2
 
-
-
-
-
+#include "images\intro.h"
 
 
 GUI::GUI(){
@@ -21,6 +18,9 @@ void GUI::Init(){
   Serial.println("MenuOrganizer::Init - end");
   
   namePicker.Reset();
+
+  init_time = millis();
+  gui_mode = MODE_INTRO;
 }
 /*
 void drawFontFaceDemo() {
@@ -58,81 +58,48 @@ void GUI::DrawNotification(){
     display.setFont(ArialMT_Plain_10);
     XY pos = notification.GetPos();
     display.drawString(64, 32, notification.GetMsg()); 
-      
   }
 }
 
-/*
-void GUI::DrawMenu(){
-  Serial.println("GUI::DrawMenu begining");delay(20);
-  display.setFont(ArialMT_Plain_10);
-  Serial.println("GUI::DrawMenu begining2");delay(20);
-  display.setTextAlignment(TEXT_ALIGN_CENTER);
-  Serial.println("GUI::DrawMenu begining3");delay(20);
-
-  LinkedList<String> names = menuOrganizer.GetOnScreenOptionNames();// and simply draw them, possibly use linked list for that 
-  Serial.println("GUI::DrawMenu begining4");delay(20);
-  int cur_opt = 0;
-  Serial.println("GUI::DrawMenu begining5");delay(20);
-  cur_opt = menuOrganizer.GetCurrentOnScreenOption();
-
-  char buff[100]={0};
-  sprintf(buff, "GUI::DrawMenu names length = %d", names.size());
-  Serial.println(buff);
-
-  Serial.println("GUI::DrawMenu - 2nd (i=1) option size " + String(names.get(1).length())); 
-  Serial.println("GUI::DrawMenu - free heap size " + String(system_get_free_heap_size()));
-  for(int i = 0; i < names.size(); i++)
-  { 
-    Serial.println("GUI::DrawMenu - option " + String(i) + " name:" + names.get(i) + " size:" + String(names.get(i).length())); delay(20);
-    if(i == cur_opt){
-      //char buff[50];
-      //sprintf(buff, "-- %s --", names.get(i).c_str());
-      Serial.println("GUI::DrawMenu - 1"); 
-      display.drawString(64, i*10, "-- " + names.get(i) + " --");
-      Serial.println("GUI::DrawMenu - 2");
-    }else{
-      Serial.println("GUI::DrawMenu - 3"); 
-      display.drawString(64, i*10, names.get(i));
-      Serial.println("GUI::DrawMenu - 4"); 
-    }
-  }
-  Serial.println("GUI::DrawMenu - end"); 
-  //display.setTextAlignment(TEXT_ALIGN_RIGHT);
-  //display.drawString(128, 0, String(millis()));
+void GUI::DrawBacklight(int x, int y, int width, int font_size){
+  display.fillRect(x, y+1, width, font_size+1);
+  int circle_y = y+font_size/2+1;
+  int circle_radius = font_size/2;
+  display.fillCircle(x, circle_y, circle_radius); display.fillCircle(x + width, circle_y, circle_radius); // make it rounded
 }
-*/
 
 void GUI::DrawMenu(){
   display.setFont(ArialMT_Plain_10);
+  byte font_size = 10;
   display.setTextAlignment(TEXT_ALIGN_LEFT);
   LinkedList<String> names = menuOrganizer.GetOnScreenOptionNames();// and simply draw them, possibly use linked list for that 
   int cur_opt = 0;
   cur_opt = menuOrganizer.GetCurrentOnScreenOption();
 
-  int x_shift_scroll_indicator = 4 + DrawScrollIndicator(menuOrganizer.GetActiveOptionsCount(), menuOrganizer.GetMaxOptionsDisplayed(), menuOrganizer.GetStartingOptionIndex());
+  int x = font_size/2 + 2;
+  if(int scrollbar_shift = DrawScrollIndicator(menuOrganizer.GetActiveOptionsCount(), menuOrganizer.GetMaxOptionsDisplayed(), menuOrganizer.GetStartingOptionIndex())){
+    x += scrollbar_shift + font_size/5;
+  }
+  
   for(int i = 0; i < names.size(); i++)
   { 
-    int y = i*(10+2) + 1;
+    int y = i*(font_size + font_size/5) + 1;
     
-    String txt = "";
+    String txt = names.get(i);
     if(i == cur_opt){
-      if(menuOrganizer.HasHorizontalOptions()){
-        //txt = names.get(i) + " ";
-        //DrawStringInRect(menuOrganizer.GetHorizontalOptionName() , display.getStringWidth(txt) + 3, y, /*rect_padding*/ 2, /*font_size*/ 10, TEXT_ALIGN_LEFT);
+      DrawBacklight(x, y, display.getStringWidth(names.get(i)), font_size);
 
-        txt = names.get(i) + " <= [" + menuOrganizer.GetHorizontalOptionName() + "]";
-      }else{
-        txt = names.get(i) + " <=";
+      display.setColor(BLACK);
+      display.drawString(x, y, txt);
+      display.setColor(WHITE);
+
+      if(menuOrganizer.HasHorizontalOptions()){
+        display.drawString(x + display.getStringWidth(txt) + int(font_size*0.8), y-1, "[" + menuOrganizer.GetHorizontalOptionName() + "]");
       }
     }else{
-      txt = names.get(i);
-    }
-    display.drawString(x_shift_scroll_indicator, y, txt);
+      display.drawString(x, y, txt);
+    }    
   }
-
-  //display.setTextAlignment(TEXT_ALIGN_RIGHT);
-  //display.drawString(128, 0, String(millis()));
 }
 
 // return amount of pixels taken horizontally
@@ -154,39 +121,9 @@ void GUI::DrawRfidBuffer(){
   display.setTextAlignment(TEXT_ALIGN_RIGHT);
   uint8_t rect_padding = 3; 
   uint8_t font_size = 10;
-
   
-  
-  /*
-  //unsigned long last_read_time = rfid.GetLastReadTime();
-  if(last_read_time > 0){
-    
-    //String str_time_passed = GetTimeSince(last_read_time);
-    int src = rfid.GetLastReadSourceType();
-    if(src == READ_SOURCE_CARD){
-      file_name = "Card";
-    }else if(src == READ_SOURCE_FILE){
-      file_name = rfid.GetLastReadFileName() + " file";
-    }
-  }else{
-    file_name = "Empty";
-  }
-  */
-
   String read_source = rfid.GetLastReadSourceType();
-
-
   DrawStringInRect(read_source, 128, 64, rect_padding, font_size, TEXT_ALIGN_RIGHT);
-
-/*
-  uint8_t padding = 3; 
-  uint8_t font_size = 10;
-  uint16_t width = display.getStringWidth(file_name);
-  //display.drawString(128, 64-font_size*2-padding*3, "DATA:");
-  display.drawString(128-padding, 64-font_size-padding-1, file_name);
-  display.drawRect(128 - width - padding*2, 64-font_size-padding*2, width+padding*2, 10+padding*2);
-*/
-  //DrawCenteredString(file_name, 10, 128, 32);
 }
 
 
@@ -233,17 +170,33 @@ void GUI::Update(){
   //display.setTextAlignment(TEXT_ALIGN_RIGHT);
   //display.drawString(128, 0, String(system_get_free_heap_size()));
 
-  if(gui_mode == MODE_MENU){
-    DrawMenu();
-    DrawRfidBuffer();
-    menuOrganizer.Update();
-  }else if(gui_mode == MODE_NAME_PICKER){
-    DrawNamePicker();
-    namePicker.Update();
-  }else if(gui_mode == MODE_NOTIFICATION){
-    DrawNotification();
-    notification.Update();
+  switch(gui_mode){
+    case MODE_INTRO:
+      display.drawXbm((128-intro_width) / 2, (64 - intro_height) / 2, intro_width, intro_height, intro_bits);
+      if(millis() - init_time > INTRO_LENGTH){
+        gui_mode = MODE_MENU;
+      }
+      break;
+    
+    case MODE_MENU:
+      DrawMenu();
+      DrawRfidBuffer();
+      menuOrganizer.Update();
+      break;
+      
+    case MODE_NAME_PICKER:
+      DrawNamePicker();
+      namePicker.Update();
+      break;
+      
+    case MODE_NOTIFICATION:
+      DrawNotification();
+      notification.Update();
+      break;
   }
+
+  
+  
   display.display();
 }
 
