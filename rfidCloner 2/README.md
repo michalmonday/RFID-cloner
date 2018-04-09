@@ -51,7 +51,8 @@
 | D1 | SDA |
 | D2 | SCL |
 | 3.3V | VCC |
-| GND | GND |
+| GND | GND |  
+
 I didn't do it but in general it is good idea (e.g. for reliability) to connect SDA and SCL pins through 10K resistors to 3.3V.  
 
 | NodeMCU | Parts | Battery |
