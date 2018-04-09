@@ -15,7 +15,6 @@ struct XY{
 
 int GetNewLineCount(String s);
 int GetNewLineCount(char * s);
-
-
+String FormatBytes(unsigned long i);
 
 #endif

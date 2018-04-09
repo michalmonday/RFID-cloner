@@ -33,8 +33,7 @@ LinkedList<String> MenuOrganizer::GetOnScreenOptionNames(){
   LinkedList<MenuOption> screen_options = GetOnScreenOptions(); 
   LinkedList<String> names;
   for(int i=0; i < screen_options.size(); i++){ 
-    String str(screen_options.get(i).text);
-    names.add(str);
+    names.add(screen_options.get(i).text);
   }
   return names;
 }
@@ -117,10 +116,14 @@ void MenuOrganizer::Notify(bool res){
 
 
 void MenuOrganizer::Init(){  
-  mainMenu->parent = mainMenu;
+  mainMenu->parent = mainMenu; mainMenu->allow_rfid_buffer_draw = true;
   manageFilesMenu->parent = mainMenu;
   pcMenu->parent = mainMenu;
-    
+  settingsMenu->parent = mainMenu;
+  debugMenu->parent = settingsMenu;
+  infoMenu->parent = debugMenu;
+
+  
   Serial.println("MenuOrganizer::Init - 1");
   AddOption(mainMenu, MenuOption{"Read card\0", true, [this](){
       rfid.RequestReadCard();
@@ -169,7 +172,7 @@ void MenuOrganizer::Init(){
         });  
   }});
 
-  AddOption(mainMenu, MenuOption{"Dump to serial\0", false, [this](){
+  AddOption(mainMenu, MenuOption{"Dump to serial", false, [this](){
       Notify("Open serial monitor\nand press ok...", 0);
       notification.OnAccept(0, [this, rfid](){rfid.DumpToSerial(); Notify(1, "Success\nCheck serial monitor\n:)", 1000);});          
       //Notify("Open serial monitor\nand press ok...", 
@@ -179,7 +182,7 @@ void MenuOrganizer::Init(){
     }
   });
 
-  AddOption(mainMenu, MenuOption{"Save to memory\0", false, [this](){
+  AddOption(mainMenu, MenuOption{"Save to memory", false, [this](){
       gui.SetMode(MODE_NAME_PICKER);
       namePicker.OnSuccess([this](){
         Serial.println("MenuOrganizer::Init - namePicker.OnSuccess");
@@ -196,14 +199,14 @@ void MenuOrganizer::Init(){
     }
   });
 
-  AddOption(mainMenu, MenuOption{"Files\0", true, [this](){        
+  AddOption(mainMenu, MenuOption{"Files", true, [this](){        
         ClearOptions(manageFilesMenu);
         Dir dir = SPIFFS.openDir("/rfid");
         int count = 0;
         while(dir.next() && count < MAX_FILES) {
           MenuOption opt = MenuOption();
-          strcpy(opt.text, dir.fileName().c_str()+6);
-          opt.text[dir.fileName().length()-10] = '\0';
+          String path = dir.fileName();
+          opt.text = path.substring(6, path.indexOf(".txt"));
           opt.active = true;
           String file_name = opt.text;
           opt.function = [this, file_name](){
@@ -220,7 +223,7 @@ void MenuOrganizer::Init(){
         //add horizontal options
         AddHorizontalOption(manageFilesMenu, MenuOption{"Load", true, [this](){
                 Serial.println("manageFilesMenu - Horizontal Load option picked.");              
-                String file_name = String(menu->options->get(menu->current_option.y).text);               
+                String file_name = menu->options->get(menu->current_option.y).text;               
                 if(rfid.ReadFromFile((char *)file_name.c_str())){
                   SetOptionName(mainMenu, 0, "Read another card\0");
                   ActivateOption(mainMenu, 1);
@@ -235,7 +238,7 @@ void MenuOrganizer::Init(){
 
         AddHorizontalOption(manageFilesMenu, MenuOption{"Overwrite", true, [this](){
             Serial.println("manageFilesMenu - Horizontal Overwrite option picked.");
-            String file_name = String(menu->options->get(menu->current_option.y).text);
+            String file_name = menu->options->get(menu->current_option.y).text;
             String read_source = rfid.GetLastReadSourceType();
             if(read_source != "Empty"){
               Notify("Are you sure you want\nto overwrite " + file_name + "\nusing " + read_source + " data?" , 
@@ -262,7 +265,7 @@ void MenuOrganizer::Init(){
               namePicker.OnSuccess([this](){
                 Serial.println("manageFilesMenu - Rename option - namePicker.OnSuccess");
                   String new_name = namePicker.GetName();
-                  String old_name = String(menu->options->get(menu->current_option.y).text);
+                  String old_name = menu->options->get(menu->current_option.y).text;
                   if(files.Rename(old_name , new_name)){
                     SetOptionText(menu, menu->current_option.y, new_name);
                     Notify("Renamed " + old_name + "\ninto " + new_name + "\n(/rfid/" + new_name + ".txt)", 0);
@@ -279,7 +282,7 @@ void MenuOrganizer::Init(){
 
         AddHorizontalOption(manageFilesMenu, MenuOption{"Delete", true, [this](){
             Serial.println("manageFilesMenu - Horizontal Delete option picked.");
-            String file_name = String(menu->options->get(menu->current_option.y).text);
+            String file_name = menu->options->get(menu->current_option.y).text;
             Notify("Are you sure you want\nto delete " + file_name + " file?", 
             /*onAccept*/ [this, file_name](){
               if(files.Remove(file_name)){
@@ -316,6 +319,90 @@ void MenuOrganizer::Init(){
   });
   */
   
+  AddOption(mainMenu, MenuOption{"Settings", true, [this](){
+      ClearOptions(settingsMenu);
+
+      AddOption(settingsMenu, MenuOption{"Brightness", true,[this](){
+          progressBar.SetLabel("Brightness");
+          progressBar.SetBorders(0, 255);
+          progressBar.SetValue(settings.Get("Brightness").toInt());
+          progressBar.OnSuccess([this](){
+            // save it (eeprom or spiffs file, create settings.cpp / settings.h)
+            int val = progressBar.GetValue();
+            gui.SetBrightness(val);
+            settings.Set("Brightness", val);
+            Notify("Brightness has been\nset to " + String(val), 1000);
+            });
+            
+          progressBar.OnFail([this](){
+            gui.SetMode(MODE_MENU);
+            });
+            
+          progressBar.SetValGetter([this](int key){
+            int to_add = 0;
+            switch(key){
+              case BUTTON_RIGHT:
+                to_add = 1;
+                break;
+              case BUTTON_LEFT:
+                to_add = -1; 
+                break;  
+              case BUTTON_UP:
+                to_add = 10;
+                break;
+              case BUTTON_DOWN:
+                to_add = -10;
+                break;
+              default:
+                return progressBar.GetValue();
+                break;
+            }
+            int brightness = progressBar.GetValue() + to_add;
+            gui.SetBrightness(brightness);
+            return brightness;
+            });
+  
+          gui.SetMode(MODE_PROGRESS_BAR);
+        }
+      });
+      
+      
+      AddOption(settingsMenu, MenuOption{"Debugging", true, [this](){
+            ClearOptions(debugMenu);
+            AddOption(debugMenu, MenuOption{"Buttons calibration view\0", true, [this](){
+              Notify("Format:\nName\nCurrent expected A0 read\nInitial expected A0 read\n(Reboot required to exit)", 
+                  /*onAccept*/[this](){gui.SetMode(MODE_BUTTON_CALIBRATION_VIEW);},
+                  /*onDecline*/[this](){gui.SetMode(MODE_MENU);}
+                  );
+            }});
+
+            
+            AddOption(debugMenu, MenuOption{"Info", true, [this](){
+              ClearOptions(infoMenu);
+              
+              AddOption(infoMenu, MenuOption{"Free heap: " + FormatBytes(ESP.getFreeHeap()), true, [this](){Notify("Free heap memory size.\n(Free dynamic memory)",0);}});
+              AddOption(infoMenu, MenuOption{"Sketch size: " + FormatBytes(ESP.getSketchSize()), true, [this](){Notify("The size of the\ncurrent sketch.",0);}});
+              AddOption(infoMenu, MenuOption{"Unused sketch: " + FormatBytes(ESP.getFreeSketchSpace()), true, [this](){Notify("The free sketch space.",0);}});
+              AddOption(infoMenu, MenuOption{"Chip ID: " + String(ESP.getChipId()), true, [this](){Notify("Core version.",0);}});     
+              AddOption(infoMenu, MenuOption{"Sdk version: " + String(ESP.getSdkVersion()), true, [this](){Notify("Version of software\ndevelopment kit.",0);}});
+              AddOption(infoMenu, MenuOption{"CPU frequency: " + String(ESP.getCpuFreqMHz()) + " MHz", true, [this](){Notify("The CPU frequency in MHz.\nMegaHertz - millions of occurences\nwithin a second.",0);}});
+              AddOption(infoMenu, MenuOption{"Fl chip ID: " + String(ESP.getFlashChipId()), true, [this](){Notify("The flash chip ID.",0);}});
+              AddOption(infoMenu, MenuOption{"Fl chip sz: " + FormatBytes(ESP.getFlashChipSize()), true, [this](){Notify("The flash chip size,\nin bytes, as seen by\nthe SDK (may be less\nthan actual size).",0);}});
+              AddOption(infoMenu, MenuOption{"Fl chip real sz: " + FormatBytes(ESP.getFlashChipRealSize()), true, [this](){Notify("The real chip size,\nin bytes, based on\nthe flash chip ID.",0);}});
+                  
+              //ESP.getCoreVersion(); 
+              //ESP.getFlashChipSpeed(void);
+
+              SetMenu(infoMenu);
+            }});
+        
+            SetMenu(debugMenu);
+          }});   
+          
+      SetMenu(settingsMenu);
+    }
+  });
+  
   SetMenu(mainMenu);
 }
 
@@ -340,7 +427,7 @@ void MenuOrganizer::RemoveOption(Menu *_menu, int option_num){
 void MenuOrganizer::SetOptionText(Menu *_menu, int option_num, String new_name){
   if(option_num < _menu->options->size()){
     MenuOption mo = _menu->options->get(option_num);
-    memset(mo.text, 0, MAX_MENU_TEXT); strcpy(mo.text, (char*)new_name.c_str());
+    mo.text = new_name;
     _menu->options->set(_menu->current_option.y, mo);
   }
 }
@@ -659,3 +746,35 @@ mainMenu = {
     
 };
 */
+
+
+
+
+/*
+https://arduino-esp8266.readthedocs.io/en/2.4.1/libraries.html#esp-specific-apis
+ESP-specific APIs
+Some ESP-specific APIs related to deep sleep, RTC and flash memories are available in the ESP object.
+ESP.deepSleep(microseconds, mode) will put the chip into deep sleep. mode is one of WAKE_RF_DEFAULT, WAKE_RFCAL, WAKE_NO_RFCAL, WAKE_RF_DISABLED. (GPIO16 needs to be tied to RST to wake from deepSleep.)
+ESP.rtcUserMemoryWrite(offset, &data, sizeof(data)) and ESP.rtcUserMemoryRead(offset, &data, sizeof(data)) allow data to be stored in and retrieved from the RTC user memory of the chip respectively. Total size of RTC user memory is 512 bytes, so offset + sizeof(data) shouldn’t exceed 512. Data should be 4-byte aligned. The stored data can be retained between deep sleep cycles. However, the data might be lost after power cycling the chip.
+ESP.restart() restarts the CPU.
+ESP.getResetReason() returns a String containing the last reset reason in human readable format.
+ESP.getFreeHeap() returns the free heap size.
+ESP.getChipId() returns the ESP8266 chip ID as a 32-bit integer.
+ESP.getCoreVersion() returns a String containing the core version.
+ESP.getSdkVersion() returns the SDK version as a char.
+ESP.getCpuFreqMHz() returns the CPU frequency in MHz as an unsigned 8-bit integer.
+ESP.getSketchSize() returns the size of the current sketch as an unsigned 32-bit integer.
+ESP.getFreeSketchSpace() returns the free sketch space as an unsigned 32-bit integer.
+ESP.getSketchMD5() returns a lowercase String containing the MD5 of the current sketch.
+ESP.getFlashChipId() returns the flash chip ID as a 32-bit integer.
+ESP.getFlashChipSize() returns the flash chip size, in bytes, as seen by the SDK (may be less than actual size).
+ESP.getFlashChipRealSize() returns the real chip size, in bytes, based on the flash chip ID.
+ESP.getFlashChipSpeed(void) returns the flash chip frequency, in Hz.
+ESP.getCycleCount() returns the cpu instruction cycle count since start as an unsigned 32-bit. This is useful for accurate timing of very short actions like bit banging.
+ESP.getVcc() may be used to measure supply voltage. ESP needs to reconfigure the ADC at startup in order for this feature to be available. Add the following line to the top of your sketch to use getVcc:
+ADC_MODE(ADC_VCC);
+TOUT pin has to be disconnected in this mode.
+Note that by default ADC is configured to read from TOUT pin using analogRead(A0), and ESP.getVCC() is not available.  
+*/
+
+

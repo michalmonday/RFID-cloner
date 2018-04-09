@@ -19,8 +19,15 @@ extern Notification notification;
 
 extern MenuOrganizer menuOrganizer;
 
+#include "ProgressBar.h"
+extern ProgressBar progressBar;
 
-#include "global_includes.h"
+#include "Settings.h"
+extern Settings settings;
+
+
+//#include "global_includes.h"
+
 #include "Time.h"
 
 #define INVALID 255
@@ -30,6 +37,8 @@ extern MenuOrganizer menuOrganizer;
 #define MODE_NAME_PICKER 2
 #define MODE_NOTIFICATION 3
 #define MODE_INTRO 4
+#define MODE_BUTTON_CALIBRATION_VIEW 5
+#define MODE_PROGRESS_BAR 6
 
 #define INTRO_LENGTH 1000
 
@@ -49,6 +58,7 @@ public:
   
   void SetMode(int m){gui_mode = m;}
 
+  void SetBrightness(int val);
 private:  
   int gui_mode = MODE_MENU;
   unsigned long init_time = 0;
@@ -58,7 +68,8 @@ private:
   void DrawRfidBuffer();
   void DrawNamePicker();
   void DrawNotification();
-
+  void DrawButtonsCalibration();
+  void DrawProgressBar();
 
   
   int DrawScrollIndicator(int items_count, int max_items, int starting_item_index); // return amount of pixels taken horizontally

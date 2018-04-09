@@ -2,6 +2,8 @@
 #define BUTTONS_H
 
 #include <Arduino.h>
+#include <functional>
+
 
 #define BUTTON_UP 1
 #define BUTTON_DOWN 2
@@ -10,14 +12,24 @@
 #define BUTTON_YES 5
 #define BUTTON_NO 6
 
+#define BUTTON_COUNT 6
+
 #define STATE_UP 0
 #define STATE_DOWN 1
+
+
+struct Calibrator{
+  int button;
+  int frame_count;
+  float diff_sum;
+
+};
 
   
 class Buttons
 {
 public: 
-  Buttons(){};
+  Buttons();
   
   void Update();
   int GetLast(){return last_button_pressed;}
@@ -32,13 +44,29 @@ public:
   //void ForceRelease(){
   //  last_button_pressed = 0;
   //}
-  
+
+  int GetLastAnalogInput(){return last_analog_input;}
+  String GetLastButtonName();
+
+  float GetButtonExpectedRead(int button_id);
+  float GetButtonInitialExpectedRead(int button_id);
+  String GetButtonName(int button_id);
+
+  void ResetFunctions();
+  void SetButtonFunction(int button_id, std::function<void()> func);
 private:
+  int last_analog_input = 0;
   int last_button_pressed = 0;
   unsigned long last_button_pressed_time = 0;
 
   unsigned long last_button_passed_limiter_time = 0;
   int last_button_passed_limiter = last_button_passed_limiter;
+
+  float initialExpectedRead[BUTTON_COUNT] = {0};
+
+
+  Calibrator cali = Calibrator();
+  void ResetCalibrator(){cali.button = 0; cali.diff_sum = 0.0; cali.frame_count = 0;}
 };
 
 

@@ -3,13 +3,12 @@
 
 #include <Arduino.h>
 
-
-#define MAX_MENU 20
 #define MAX_MENU_TEXT 40
 
 #define INVALID 255
 #define CANCELLED 254
 
+#include "global_includes.h"
 
 #include "LinkedList.h"
 #include "Buttons.h"
@@ -27,9 +26,16 @@ extern Notification notification;
 #include "PCinterface.h"
 extern PCinterface pcInterface;
 
+#include "ProgressBar.h"
+extern ProgressBar progressBar;
+
+#include "Settings.h"
+extern Settings settings;
+
+
 
 struct MenuOption{
-  char text[MAX_MENU_TEXT];
+  String text; //text[MAX_MENU_TEXT];
   bool active;
   std::function<void()> function;
 };
@@ -47,6 +53,7 @@ struct Menu{
   int current_option_relative = 0;
   LinkedList<MenuOption> *options = new LinkedList<MenuOption>;
   LinkedList<MenuOption> *horizontal_options = new LinkedList<MenuOption>;
+  bool allow_rfid_buffer_draw = false;
 };
 
 
@@ -69,16 +76,20 @@ public:
   bool HasHorizontalOptions(){return HasHorizontalOptions(menu);}
   bool HasHorizontalOptions(Menu *_menu){return (bool)menu->horizontal_options->size();}
   
-  String GetHorizontalOptionName(){return String(menu->horizontal_options->get(menu->current_option.x).text);}
+  String GetHorizontalOptionName(){return menu->horizontal_options->get(menu->current_option.x).text;}
 
   int GetMaxOptionsDisplayed(){return menu->max_options_displayed;}
   int GetStartingOptionIndex(){return menu->starting_option;}
   int GetActiveOptionsCount(){return GetActiveOptions().size();}
-  
+
+  bool AllowedBufferDraw(){return menu->allow_rfid_buffer_draw;}
 private:
   Menu *menu;
   Menu *mainMenu = new Menu; 
   Menu *pcMenu = new Menu;
+  Menu *settingsMenu = new Menu;
+  Menu *debugMenu = new Menu;
+  Menu *infoMenu = new Menu;
 
   Menu *manageFilesMenu = new Menu; 
 
@@ -89,7 +100,7 @@ private:
   void SetOptionText(Menu *_menu, int option_num, String new_name);
   void AddHorizontalOption(Menu *_menu, MenuOption option);
   void ClearOptions(Menu *_menu);
-  void SetOptionName(Menu * _menu, int opt_num, String opt_name){MenuOption mo = _menu->options->get(opt_num); strcpy(mo.text, (char*)opt_name.c_str()); _menu->options->set(opt_num, mo);}
+  void SetOptionName(Menu * _menu, int opt_num, String opt_name){MenuOption mo = _menu->options->get(opt_num); mo.text = opt_name; _menu->options->set(opt_num, mo);}
   
   void HandleControls();
   bool Cancelled();

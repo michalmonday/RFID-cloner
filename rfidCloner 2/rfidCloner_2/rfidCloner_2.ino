@@ -53,6 +53,12 @@ Files files;
 #include "PCinterface.h"
 PCinterface pcInterface;
 
+#include "ProgressBar.h"
+ProgressBar progressBar;
+
+#include "Settings.h"
+Settings settings;
+
 void setup() {
   Serial.begin(115200);
   //delay(10000);

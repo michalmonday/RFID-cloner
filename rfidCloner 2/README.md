@@ -14,14 +14,18 @@
 # Parts used 
 -NodeMCU (version with CP2102)  
 -RC522 RFID reader module  
+-SSD1306 OLED display (i2C - 4 pin version)  
 -MIFARE 1K RFID card (with changeable UID, 13.56Mhz)  
 -some RFID card to copy (only 13.56Mhz cards can be read/written by this particular card reader module)  
 -buttons (6 of them)  
 -resistors (4.7k, 2.2k, 2x1k, 680, 470, 220)  
 -cables  
 -switch  
+-soldering equipment  
+-hot glue (or tape)  
 -3 AAA batteries (could be 3.7 li-po flat battery or any other battery having over 3.3V that doesn't provide more voltage than NodeMCU can accept using Vin pin)  
 -2 pin dupont connector (for easier battery replacement/removal)    
+
 
 
 # Required libraries  
@@ -48,6 +52,7 @@
 | D2 | SCL |
 | 3.3V | VCC |
 | GND | GND |
+I didn't do it but in general it is good idea (e.g. for reliability) to connect SDA and SCL pins through 10K resistors to 3.3V.  
 
 | NodeMCU | Parts | Battery |
 | --- | --- | --- |

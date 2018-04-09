@@ -12,6 +12,7 @@ void GUI::Init(){
   Serial.println("GUI::Init");
   display.init();
   display.flipScreenVertically();
+  display.setBrightness(settings.Get("Brightness").toInt());
     
   Serial.println("MenuOrganizer::Init");
   menuOrganizer.Init();
@@ -110,7 +111,7 @@ int GUI::DrawScrollIndicator(int items_count, int max_items_displayed, int start
     display.drawRect(0,0, width, 64);
     uint16_t height = (uint16_t)int(float(max_items_displayed) / float(items_count) * 62.0);
     uint16_t y_pos = (uint16_t)int(64.0 / float(items_count) * float(starting_item_index));
-    display.fillRect(1, y_pos+1, width-1, height);
+    display.fillRect(1, y_pos+1, width-1, height+1);
     return width;
   }
   return 0;
@@ -163,6 +164,11 @@ void GUI::DrawNamePicker(){
   display.drawString(64, (int)(((64.0/3.0)*2.0)-8.0), drawnName);
 }
 
+/*
+int brightness_add = 1; 
+int brightness = 0;
+*/
+
 
 void GUI::Update(){
   display.clear();
@@ -180,7 +186,9 @@ void GUI::Update(){
     
     case MODE_MENU:
       DrawMenu();
-      DrawRfidBuffer();
+      if(menuOrganizer.AllowedBufferDraw()){
+        DrawRfidBuffer();
+      }
       menuOrganizer.Update();
       break;
       
@@ -193,14 +201,57 @@ void GUI::Update(){
       DrawNotification();
       notification.Update();
       break;
+      
+    case MODE_BUTTON_CALIBRATION_VIEW:
+      DrawButtonsCalibration();
+      break;
+
+    case MODE_PROGRESS_BAR:
+      DrawProgressBar();
+      progressBar.Update();
+      break;
   }
 
-  
-  
+/*
+  brightness += brightness_add;
+  if(brightness > 255 || brightness < 0){brightness_add *= -1; brightness += brightness_add;}
+  display.setBrightness(brightness);
+
+  display.setTextAlignment(TEXT_ALIGN_RIGHT);
+  display.drawString(128, 0, String(brightness));
+*/
+
   display.display();
 }
 
+void GUI::DrawButtonsCalibration(){
+  display.setTextAlignment(TEXT_ALIGN_LEFT);
+  for(int i=0; i<BUTTON_COUNT; i++){
+    int val_current = int(buttons.GetButtonExpectedRead(i));
+    int val_initial = int(buttons.GetButtonInitialExpectedRead(i));
+    String n = buttons.GetButtonName(i);
+    
+    display.drawString(0, i*10 + 1, n + " - " + val_current + ":" + val_initial);
+  }
 
+  display.setTextAlignment(TEXT_ALIGN_RIGHT);
+  display.drawString(128, 0, "A0 = " + String(buttons.GetLastAnalogInput()));
+  display.drawString(128, 12, String(buttons.GetLastButtonName()));
+}
+
+void GUI::DrawProgressBar(){
+  String label = progressBar.GetLabel();
+  if(label.length()){
+    int val = progressBar.GetValue();
+    int progress = progressBar.GetProgressPercent();
+    int low_border = progressBar.GetLowerBorder();
+    int high_border = progressBar.GetHigherBorder();
+
+    display.setTextAlignment(TEXT_ALIGN_CENTER);
+    display.drawProgressBar((128 / 4) / 2, 64/3*2, 128 / 4 * 3, 10, progress);
+    display.drawString(64, 64/3, "Brightness = " + String(val));
+  }
+}
 
 /*
 void GUI::Update(){
@@ -236,6 +287,9 @@ void GUI::Update(){
 */
 
 
+void GUI::SetBrightness(int val){
+  display.setBrightness(val);
+}
 
 
 
