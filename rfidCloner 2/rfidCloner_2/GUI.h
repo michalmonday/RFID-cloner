@@ -16,7 +16,6 @@ extern Buttons buttons;
 extern Notification notification;
 
 #include "MenuOrganizer.h"
-
 extern MenuOrganizer menuOrganizer;
 
 #include "ProgressBar.h"
@@ -39,6 +38,7 @@ extern Settings settings;
 #define MODE_INTRO 4
 #define MODE_BUTTON_CALIBRATION_VIEW 5
 #define MODE_PROGRESS_BAR 6
+#define MODE_LOCK 7
 
 #define INTRO_LENGTH 1000
 
@@ -59,6 +59,7 @@ public:
   void SetMode(int m){gui_mode = m;}
 
   void SetBrightness(int val);
+  void FlipScreenVertically();
 private:  
   int gui_mode = MODE_MENU;
   unsigned long init_time = 0;

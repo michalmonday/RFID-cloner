@@ -7,9 +7,12 @@
 extern Files files;
 
 
+
 class Settings
 {
 public:
+  void Load();
+  
   bool Set(String key, String val);
   bool Set(String key, int val){Set(key, String(val));}
   bool Set(int key, int val){Set(String(key), String(val));}

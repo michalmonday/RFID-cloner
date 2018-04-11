@@ -1,8 +1,10 @@
 #include "MenuOrganizer.h"
 
- 
 #include "GUI.h"
 extern GUI gui;
+
+#include "Lock.h"
+extern Lock lock;
 
 void MenuOrganizer::Update(){
   HandleControls();
@@ -365,6 +367,57 @@ void MenuOrganizer::Init(){
           gui.SetMode(MODE_PROGRESS_BAR);
         }
       });
+
+      AddOption(settingsMenu, MenuOption{"Lock", true,[this](){
+          Notify("Set lock state:\nAccept - active\nDecline - not active", 
+            /*onAccept*/ [this](){
+                settings.Set("UseLock", 1);
+                Notify(1, "Lock is turned on.", 0);
+              },
+            /*onDecline*/ [this](){
+                settings.Set("UseLock", 0);
+                Notify(1, "Lock is turned off.", 0);
+              }
+          );
+
+      }});
+
+      AddOption(settingsMenu, MenuOption{"Last read file name", true,[this](){
+          Notify("Restore default?\n(Default = %Last_read%)", 
+            /*onAccept*/ [this](){
+                String new_name = "%Last_read%";
+                String old_name = settings.Get("LastReadFileName");
+                if(files.Rename(old_name , new_name)){
+                  settings.Set("LastReadFileName", new_name);
+                  Notify(1, "Renamed " + old_name + "\ninto " + new_name + "\n(/rfid/" + new_name + ".txt)", 0);
+                }else{
+                  Notify(1, "Could not rename " + old_name + "\ninto " + new_name + "\n(/rfid/" + new_name + ".txt)", 0);
+                }
+              },
+            /*onDecline*/ [this](){
+                gui.SetMode(MODE_NAME_PICKER);
+                String old_name = settings.Get("LastReadFileName");
+                namePicker.SetInitialName(old_name);
+                namePicker.OnSuccess([this, old_name](){
+                  Serial.println("settingsMenu - Last read file name option - namePicker.OnSuccess");
+                    String new_name = namePicker.GetName();
+                    if(files.Rename(old_name , new_name)){
+                      settings.Set("LastReadFileName", new_name);
+                      Notify(1, "Renamed " + old_name + "\ninto " + new_name + "\n(/rfid/" + new_name + ".txt)", 0);
+                    }else{
+                      Notify(1, "Could not rename " + old_name + "\ninto " + new_name + "\n(/rfid/" + new_name + ".txt)", 0);
+                    }
+                  });
+                
+                namePicker.OnCancel([this](){
+                      Serial.println("settingsMenu - Last read file name option - namePicker.OnCancel (quit name picker)" );
+                      gui.SetMode(MODE_MENU);
+                  });
+              }
+          );
+
+        
+      }});
       
       
       AddOption(settingsMenu, MenuOption{"Debugging", true, [this](){
@@ -385,7 +438,7 @@ void MenuOrganizer::Init(){
               AddOption(infoMenu, MenuOption{"Unused sketch: " + FormatBytes(ESP.getFreeSketchSpace()), true, [this](){Notify("The free sketch space.",0);}});
               AddOption(infoMenu, MenuOption{"Chip ID: " + String(ESP.getChipId()), true, [this](){Notify("Core version.",0);}});     
               AddOption(infoMenu, MenuOption{"Sdk version: " + String(ESP.getSdkVersion()), true, [this](){Notify("Version of software\ndevelopment kit.",0);}});
-              AddOption(infoMenu, MenuOption{"CPU frequency: " + String(ESP.getCpuFreqMHz()) + " MHz", true, [this](){Notify("The CPU frequency in MHz.\nMegaHertz - millions of occurences\nwithin a second.",0);}});
+              AddOption(infoMenu, MenuOption{"CPU frequency: " + String(ESP.getCpuFreqMHz()) + " MHz", true, [this](){Notify("The CPU frequency in MHz.\nMega Hertz - millions of\noccurences within a second.",0);}});
               AddOption(infoMenu, MenuOption{"Fl chip ID: " + String(ESP.getFlashChipId()), true, [this](){Notify("The flash chip ID.",0);}});
               AddOption(infoMenu, MenuOption{"Fl chip sz: " + FormatBytes(ESP.getFlashChipSize()), true, [this](){Notify("The flash chip size,\nin bytes, as seen by\nthe SDK (may be less\nthan actual size).",0);}});
               AddOption(infoMenu, MenuOption{"Fl chip real sz: " + FormatBytes(ESP.getFlashChipRealSize()), true, [this](){Notify("The real chip size,\nin bytes, based on\nthe flash chip ID.",0);}});

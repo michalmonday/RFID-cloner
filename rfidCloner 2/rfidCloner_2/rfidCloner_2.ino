@@ -59,6 +59,9 @@ ProgressBar progressBar;
 #include "Settings.h"
 Settings settings;
 
+#include "Lock.h"
+Lock lock;
+
 void setup() {
   Serial.begin(115200);
   //delay(10000);
@@ -69,11 +72,12 @@ void setup() {
   //files.DumpDirToSerial("/");
   //files.DumpDirToSerial("/rfid");
   //files.RemoveDir("/rfid");
-  files.SetTemporaryLastReadFileName("%Last_read%");
-  
+
   gui.Init();
   rfid.Init();
   notification.Init();
+
+  settings.Load();            // see Settings.cpp to see default settings
 }
 
 void loop() {

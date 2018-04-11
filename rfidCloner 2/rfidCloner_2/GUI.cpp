@@ -4,25 +4,29 @@ SSD1306Wire display(0x3c, D1, D2); // D1 D2
 
 #include "images\intro.h"
 
+#include "Lock.h"
+extern Lock lock;
 
 GUI::GUI(){
 }
 
 void GUI::Init(){
   Serial.println("GUI::Init");
-  display.init();
-  display.flipScreenVertically();
-  display.setBrightness(settings.Get("Brightness").toInt());
-    
-  Serial.println("MenuOrganizer::Init");
-  menuOrganizer.Init();
-  Serial.println("MenuOrganizer::Init - end");
+  display.init();    
   
+  Serial.println("GUI::Init - MenuOrganizer::Init");
+  menuOrganizer.Init();
+  Serial.println("GUI::Init - MenuOrganizer::Init - end");
   namePicker.Reset();
 
   init_time = millis();
-  gui_mode = MODE_INTRO;
+  gui_mode = MODE_INTRO;    
 }
+
+void GUI::FlipScreenVertically(){
+  display.flipScreenVertically();
+}
+
 /*
 void drawFontFaceDemo() {
     // Font Demo1
@@ -177,6 +181,15 @@ void GUI::Update(){
   //display.drawString(128, 0, String(system_get_free_heap_size()));
 
   switch(gui_mode){
+    case MODE_LOCK:
+    {
+      display.setTextAlignment(TEXT_ALIGN_CENTER); 
+      display.drawString(64, int(64.0/3.0), "Enter combination:"); String comb_len_repr = ""; for(int i=0; i<lock.GetTryLength(); i++){comb_len_repr += "*";}
+      display.drawString(64, int(64.0/3.0*2.0), comb_len_repr);
+      lock.Update();
+      if(lock.Solved()){gui_mode = MODE_INTRO;}
+    }
+      break;
     case MODE_INTRO:
       display.drawXbm((128-intro_width) / 2, (64 - intro_height) / 2, intro_width, intro_height, intro_bits);
       if(millis() - init_time > INTRO_LENGTH){

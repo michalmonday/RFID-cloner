@@ -2,7 +2,25 @@
 
 #define MAX_SETTING_LEN 50
 
-// Brightness
+#include "GUI.h"
+extern GUI gui;
+
+#include "Lock.h"
+extern Lock lock;
+
+void Settings::Load(){
+  files.SetTemporaryLastReadFileName(Get("LastReadFileName", "%Last_read%"));
+  gui.SetBrightness(Get("Brightness", 60).toInt());
+  if(Get("FlipScreenVertically", 1).toInt() == 1){gui.FlipScreenVertically();}
+  bool use_lock = (bool)Get("UseLock", 0).toInt();
+  lock.SetState(use_lock);
+  if(use_lock){
+    gui.SetMode(MODE_LOCK);
+  }  
+
+  lock.SetCorrectSequence(Get("LockCorrectSequence", "1234"));
+  
+}
 
 bool Settings::Set(String key, String val){
   String path = "/settings/" + key;
