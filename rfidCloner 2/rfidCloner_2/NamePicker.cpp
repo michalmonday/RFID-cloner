@@ -66,28 +66,21 @@ void NamePicker::HandleControls(){
         break;
       case BUTTON_UP:
       {
-        if(file_name[x] == ' '){
-          file_name[x] = 'a';
+        char_index++;
+        if(char_index >= charset.length()){
+          char_index = 0;
+
         }
-        else if(file_name[x] == 'z'){
-          file_name[x] = ' ';
-        }
-        else{
-          file_name[x]++;
-        }      
+        file_name[x] = charset[char_index];    
       }
         break;
       case BUTTON_DOWN:
       {
-        if(file_name[x] == ' '){
-          file_name[x] = 'z';
+        char_index--;
+        if(char_index < 0){
+          char_index = charset.length()-1;
         } 
-        else if(file_name[x] == 'a'){
-          file_name[x] = ' ';
-        }
-        else{
-          file_name[x] -= 1;
-        }
+        file_name[x] = charset[char_index];
       } 
         break;
       case BUTTON_LEFT:
@@ -95,19 +88,24 @@ void NamePicker::HandleControls(){
         if(x < 0){
           x = 0;
         }
+        char_index = charset.indexOf(file_name[x]);
+        
         break;
       case BUTTON_RIGHT:
         x++;
-        
         if(x >= MAX_FILENAME){
           x = 0;
         }
         //Serial.println("namePicker::HandleControls - button right - strlen(file_name) = " + String(strlen(file_name)) + "; x = " + String(x));
         if(x >= strlen(file_name)){
           //Serial.println("x > strlen(file_name)");
-          file_name[x] = 'a'; 
+          char_index = 1;
+          file_name[x] = charset[char_index]; 
           file_name[x+1] = '\0'; 
+        }else{
+          char_index = charset.indexOf(file_name[x]);
         }
+        
 
         break;
       default:

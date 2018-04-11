@@ -10,6 +10,7 @@
 
 #include "global_includes.h"
 
+
 #include "LinkedList.h"
 #include "Buttons.h"
 extern Buttons buttons;
@@ -31,7 +32,6 @@ extern ProgressBar progressBar;
 
 #include "Settings.h"
 extern Settings settings;
-
 
 
 struct MenuOption{

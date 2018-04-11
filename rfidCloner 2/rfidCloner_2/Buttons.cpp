@@ -1,7 +1,8 @@
 #include "Buttons.h"
 
+
 #define THRESHOLD_INPUT 50.0                 // if input > THRESHOLD then key was pressed
-#define INPUT_TOLERANCE 10.0                 //so if 110 or 90 will be received when BUTTON_UP is pressed then it will be accepted anyway
+#define INPUT_TOLERANCE 20.0                 //so if 120 or 80 will be received when BUTTON_UP is pressed then it will be accepted anyway
 
 
 /*
@@ -25,7 +26,7 @@ ButtonMap buttonMap[BUTTON_COUNT] = {
  315.0, BUTTON_LEFT, "LEFT", [](){},
  449.0, BUTTON_RIGHT, "RIGHT", [](){},
  629.0, BUTTON_YES, "ACCEPT", [](){},
- 875.0, BUTTON_NO, "DECLINE", [](){},
+ 871.0, BUTTON_NO, "DECLINE", [](){},
 };
 
 Buttons::Buttons(){

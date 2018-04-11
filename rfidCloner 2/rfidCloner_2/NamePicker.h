@@ -36,6 +36,9 @@ private:
 
   std::function<void()> onCancelFunc = [](){};
   std::function<void()> onSuccessFunc = [](){};
+
+  String charset = " abcdefghijklmnopqrstuvwxyz0123456789%[]()@^_`'!\"#$&\\*+,-./:;<=>?{|}~ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  int char_index = 1;
 };
 
 
