@@ -1,7 +1,3 @@
-# Critical bug  
-Please refrain from using "Lock" feature from "Settings" menu. I pushed update to github rather as a backup because I've had issues with PC and "Lock" is not ready yet. If you by some chance turned it on and can't get through the initial lock screen then the combination to enter is: BUTTON_UP - BUTTON_DOWN - BUTTON_LEFT - BUTTON_RIGHT - BUTTON_ACCEPT.  Sorry for inconvenience, I'll implement it properly soon.  
-
-
 ![](https://i.imgur.com/N4BjJwe.jpg)  
 
 [Youtube demo video link](https://www.youtube.com/watch?v=K7hS6TLmSes)  
