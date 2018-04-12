@@ -22,7 +22,6 @@ struct Calibrator{
   int button;
   int frame_count;
   float diff_sum;
-
 };
 
   
@@ -51,6 +50,9 @@ public:
   float GetButtonExpectedRead(int button_id);
   float GetButtonInitialExpectedRead(int button_id);
   String GetButtonName(int button_id);
+  String GetButtonName(String button_id);
+  String GetButtonName(char button_id);
+  String GetButtonName(char* button_id);
 
   void ResetFunctions();
   void SetButtonFunction(int button_id, std::function<void()> func);
@@ -67,6 +69,9 @@ private:
 
   Calibrator cali = Calibrator();
   void ResetCalibrator(){cali.button = 0; cali.diff_sum = 0.0; cali.frame_count = 0;}
+
+  int GetButtonIndex(int button_id);
+  
 };
 
 

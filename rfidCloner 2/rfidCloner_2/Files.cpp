@@ -148,12 +148,12 @@ bool Files::ReadTo(char *file_name, Card *card){
     f.seek(0,SeekSet);
 
     for(int i=0; i<MAX_UID; i++){
-      f.readBytes(card->UID+i, 1);
+      f.readBytes((char*)card->UID+i, 1);
     }
 
     //Serial.println("\nBlocks:");
     for(int i=0; i<64; i++){
-      f.readBytes(card->data[i], 16);
+      f.readBytes((char*)card->data[i], 16);
     }
     f.close();
     return true;

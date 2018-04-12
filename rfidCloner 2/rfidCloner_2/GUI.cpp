@@ -20,6 +20,7 @@ void GUI::Init(){
   namePicker.Reset();
 
   init_time = millis();
+
   gui_mode = MODE_INTRO;    
 }
 
@@ -187,12 +188,13 @@ void GUI::Update(){
       display.drawString(64, int(64.0/3.0), "Enter combination:"); String comb_len_repr = ""; for(int i=0; i<lock.GetTryLength(); i++){comb_len_repr += "*";}
       display.drawString(64, int(64.0/3.0*2.0), comb_len_repr);
       lock.Update();
-      if(lock.Solved()){gui_mode = MODE_INTRO;}
     }
       break;
     case MODE_INTRO:
+      if(intro_begin == 0){intro_begin = millis();}
+     
       display.drawXbm((128-intro_width) / 2, (64 - intro_height) / 2, intro_width, intro_height, intro_bits);
-      if(millis() - init_time > INTRO_LENGTH){
+      if(millis() - intro_begin > INTRO_LENGTH){
         gui_mode = MODE_MENU;
       }
       break;

@@ -83,15 +83,22 @@ public:
   int GetActiveOptionsCount(){return GetActiveOptions().size();}
 
   bool AllowedBufferDraw(){return menu->allow_rfid_buffer_draw;}
+
+  void Notify(String msg, int timeout, int gui_mode_to_revert);
+  
 private:
   Menu *menu;
+  
   Menu *mainMenu = new Menu; 
-  Menu *pcMenu = new Menu;
-  Menu *settingsMenu = new Menu;
-  Menu *debugMenu = new Menu;
-  Menu *infoMenu = new Menu;
+    Menu *manageFilesMenu = new Menu;
+    Menu *settingsMenu = new Menu;
+        Menu *lockMenu = new Menu;
+        Menu *debugMenu = new Menu;
+            Menu *infoMenu = new Menu;
+    Menu *pcMenu = new Menu;
+        
 
-  Menu *manageFilesMenu = new Menu; 
+   
 
   
   void SetMenu(Menu *menu);
@@ -112,6 +119,7 @@ private:
   void UpdateActiveMenu();
   void ShiftCurrentOption(int buttonID);
   void Notify(String msg, int timeout);
+  
   void Notify(String msg, std::function<void()> onAccept, std::function<void()> onDecline);
   void Notify(int level, String msg, int timeout);
   void Notify(int level, String msg, std::function<void()> onAccept, std::function<void()> onDecline);

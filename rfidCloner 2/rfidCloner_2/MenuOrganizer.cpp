@@ -76,11 +76,20 @@ int MenuOrganizer::GetCurrentOnScreenOption(){
   return menu->current_option_relative;
 }
 
+
+
 void MenuOrganizer::Notify(String msg, int timeout){
   gui.SetMode(MODE_NOTIFICATION);
   notification.Set(0, msg, {64, 32-5}, timeout);   
   notification.OnAccept(0, [msg](){Serial.println("MenuOrganizer::Notify - onAccept - " + msg); gui.SetMode(MODE_MENU); });
   notification.OnDecline(0, [msg](){ Serial.println("MenuOrganizer::Notify - onDecline - " + msg); gui.SetMode(MODE_MENU); });  
+}
+
+void MenuOrganizer::Notify(String msg, int timeout, int gui_mode_to_revert){
+  gui.SetMode(MODE_NOTIFICATION);
+  notification.Set(0, msg, {64, 32-5}, timeout);   
+  notification.OnAccept(0, [msg, gui_mode_to_revert](){Serial.println("MenuOrganizer::Notify - onAccept - " + msg); gui.SetMode(gui_mode_to_revert); });
+  notification.OnDecline(0, [msg, gui_mode_to_revert](){ Serial.println("MenuOrganizer::Notify - onDecline - " + msg); gui.SetMode(gui_mode_to_revert); });  
 }
 
 void MenuOrganizer::Notify(String msg, std::function<void()> onAccept, std::function<void()> onDecline){
@@ -123,7 +132,9 @@ void MenuOrganizer::Init(){
   pcMenu->parent = mainMenu;
   settingsMenu->parent = mainMenu;
   debugMenu->parent = settingsMenu;
+  lockMenu->parent = settingsMenu;
   infoMenu->parent = debugMenu;
+  
 
   
   Serial.println("MenuOrganizer::Init - 1");
@@ -369,16 +380,31 @@ void MenuOrganizer::Init(){
       });
 
       AddOption(settingsMenu, MenuOption{"Lock", true,[this](){
-          Notify("Set lock state:\nAccept - active\nDecline - not active", 
-            /*onAccept*/ [this](){
-                settings.Set("UseLock", 1);
-                Notify(1, "Lock is turned on.", 0);
-              },
-            /*onDecline*/ [this](){
-                settings.Set("UseLock", 0);
-                Notify(1, "Lock is turned off.", 0);
+          ClearOptions(lockMenu);
+          int option_index_toggle_lock = 0;
+          AddOption(lockMenu, MenuOption{"Toggle " + (lock.GetState() == true ? String("[On]") : String("[Off]")), true, [this](){
+              bool state = lock.GetState();
+              if(state == false){
+                Notify("Lock is turned on.\nCorrect combination:\n" + lock.GetFormattedCorrectSequence("-"), 0);
               }
-          );
+              lock.SetState(!state);
+              settings.Set("UseLock", !state);
+              SetOptionName(lockMenu, option_index_toggle_lock, "Toggle " + (!state == true ? String("[On]") : String("[Off]")));
+            }});
+            
+          AddOption(lockMenu, MenuOption{"View combination", true, [this](){
+              Notify("Current combination:\n" + lock.GetFormattedCorrectSequence("-"), 0);
+            }});
+            
+          AddOption(lockMenu, MenuOption{"Set combination", true, [this](){
+              lock.OnReady([this](){settings.Set("LockCorrectSequence", lock.GetInput()); lock.SetCorrectSequence(lock.GetInput()); Notify("Combination set to:\n" + lock.GetFormattedCorrectSequence("-"), 0); lock.Reset();});
+              lock.OnCancel([this](){lock.Reset(); gui.SetMode(MODE_MENU);});
+              gui.SetMode(MODE_LOCK);
+            }});
+            
+          SetMenu(lockMenu);
+        
+
 
       }});
 
@@ -436,7 +462,7 @@ void MenuOrganizer::Init(){
               AddOption(infoMenu, MenuOption{"Free heap: " + FormatBytes(ESP.getFreeHeap()), true, [this](){Notify("Free heap memory size.\n(Free dynamic memory)",0);}});
               AddOption(infoMenu, MenuOption{"Sketch size: " + FormatBytes(ESP.getSketchSize()), true, [this](){Notify("The size of the\ncurrent sketch.",0);}});
               AddOption(infoMenu, MenuOption{"Unused sketch: " + FormatBytes(ESP.getFreeSketchSpace()), true, [this](){Notify("The free sketch space.",0);}});
-              AddOption(infoMenu, MenuOption{"Chip ID: " + String(ESP.getChipId()), true, [this](){Notify("Core version.",0);}});     
+              AddOption(infoMenu, MenuOption{"Chip ID: " + String(ESP.getChipId()), true, [this](){Notify("Chip ID.",0);}});     
               AddOption(infoMenu, MenuOption{"Sdk version: " + String(ESP.getSdkVersion()), true, [this](){Notify("Version of software\ndevelopment kit.",0);}});
               AddOption(infoMenu, MenuOption{"CPU frequency: " + String(ESP.getCpuFreqMHz()) + " MHz", true, [this](){Notify("The CPU frequency in MHz.\nMega Hertz - millions of\noccurences within a second.",0);}});
               AddOption(infoMenu, MenuOption{"Fl chip ID: " + String(ESP.getFlashChipId()), true, [this](){Notify("The flash chip ID.",0);}});

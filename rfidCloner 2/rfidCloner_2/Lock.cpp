@@ -7,20 +7,41 @@ void Lock::Update(){
   if(int key = buttons.GetLast(true)){
     switch(key){
       case BUTTON_YES:
-        if(TryCombo() == true){
-          solved = true;
-        }else{
-          solved = false;
-        }
+        onReady();
+        input_sequence = "";
         break;
       case BUTTON_NO:
-        try_sequence = "";
+        if(input_sequence.length() > 0){
+          input_sequence = "";
+        }else{
+          onCancel();
+        }
         break;
       default:
-        try_sequence += String(key);
+        input_sequence += String(key);
         break;  
     }
   }
+}
+
+void Lock::Reset(){
+  input_sequence = "";
+  onReady = [](){};
+  onCancel = [](){};
+}
+
+
+String Lock::GetFormattedCorrectSequence(String delimeter){
+  String ret = "";
+  if(correct_sequence.length() > 0){
+    for(int i=0; i<correct_sequence.length(); i++){
+      if(i>0){ret += delimeter;}
+      ret += buttons.GetButtonName(correct_sequence[i]);
+    }
+  }else{
+    ret = "Empty";
+  }
+  return ret;
 }
 
 

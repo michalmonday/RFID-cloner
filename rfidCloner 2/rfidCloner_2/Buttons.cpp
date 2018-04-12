@@ -76,7 +76,7 @@ void Buttons::Update(){
   }
   else{
     if(last_button_pressed){
-      buttonMap[last_button_pressed-1].onRelease();
+      buttonMap[GetButtonIndex(last_button_pressed)].onRelease();
     }
     last_button_pressed = 0;
   }
@@ -98,21 +98,45 @@ bool Buttons::Limiter(int normal_speed_limit, int hold_speed_limit, int threshol
   return ret;
 }
 
+int Buttons::GetButtonIndex(int button_id){
+  for(int i = 0; i < BUTTON_COUNT; i++){
+    if(buttonMap[i].button_id == button_id){
+      return i;
+    }
+  }
+  return 0;
+}
+
 float Buttons::GetButtonExpectedRead(int button_id){
-  return buttonMap[button_id].expected_read;
+  return  buttonMap[GetButtonIndex(button_id)].expected_read;
 }
 
 float Buttons::GetButtonInitialExpectedRead(int button_id){
-  return initialExpectedRead[button_id];
+  return initialExpectedRead[GetButtonIndex(button_id)];
 }
 
 String Buttons::GetButtonName(int button_id){
-  return buttonMap[button_id].name_txt;
+  return buttonMap[GetButtonIndex(button_id)].name_txt;
+}
+
+String Buttons::GetButtonName(String button_id){
+  char buff[2] = {button_id[0], 0};
+  return GetButtonName((int)strtol(buff, NULL, 10));
+}
+
+String Buttons::GetButtonName(char button_id){
+  char buff[2] = {button_id, 0};
+  return GetButtonName((int)strtol(buff, NULL, 10));
+}
+
+String Buttons::GetButtonName(char* button_id){
+  char buff[2] = {button_id[0], 0};
+  return GetButtonName((int)strtol(buff, NULL, 10));
 }
 
 String Buttons::GetLastButtonName(){
   if(last_button_pressed){
-    return buttonMap[last_button_pressed-1].name_txt;
+    return GetButtonName(last_button_pressed);
   }
   return "-";
 }
@@ -123,9 +147,25 @@ void Buttons::ResetFunctions(){
   }
 }
 
-void SetButtonFunction(int button_id, std::function<void()> func){
-  buttonMap[button_id].onRelease = func;
+/*
+void Buttons::SetButtonFunction(int button_id, std::function<void()> func){
+  for(int i = 0; i < BUTTON_COUNT; i++){
+    if(buttonMap[i].button_id == button_id){
+      buttonMap[button_id].onRelease = func;
+      return;
+    }
+  }
+
+  Serial.println("Buttons::GetButtonName - NONE FOUND - button_id=" + String(button_id));
 }
+*/
+
+
+
+
+
+
+
 
 
 

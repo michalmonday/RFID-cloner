@@ -61,8 +61,11 @@ public:
   void SetBrightness(int val);
   void FlipScreenVertically();
 private:  
-  int gui_mode = MODE_MENU;
+  int gui_mode = 0;
   unsigned long init_time = 0;
+
+  unsigned long intro_begin = 0;
+  
 
   void DrawIntro();
   void DrawMenu();

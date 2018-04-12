@@ -8,6 +8,8 @@ extern GUI gui;
 #include "Lock.h"
 extern Lock lock;
 
+
+
 void Settings::Load(){
   files.SetTemporaryLastReadFileName(Get("LastReadFileName", "%Last_read%"));
   gui.SetBrightness(Get("Brightness", 60).toInt());
@@ -15,6 +17,8 @@ void Settings::Load(){
   bool use_lock = (bool)Get("UseLock", 0).toInt();
   lock.SetState(use_lock);
   if(use_lock){
+    lock.OnReady([this](){if(lock.TrialMatchesCorrectSequence()){gui.SetMode(MODE_INTRO); lock.Reset();}});
+    lock.OnCancel([this](){menuOrganizer.Notify("Device is locked...", 500, /*gui_mode_to_revert*/MODE_LOCK);});
     gui.SetMode(MODE_LOCK);
   }  
 
