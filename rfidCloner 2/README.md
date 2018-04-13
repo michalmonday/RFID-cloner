@@ -2,13 +2,42 @@
 
 [Youtube demo video link](https://www.youtube.com/watch?v=K7hS6TLmSes)  
 
-# List of contents
+# List of contents  
+* [Features](#features)  
+* [Bugs](#bugs)  
 * [Parts used](#parts-used)  
 * [Required libraries](#required-libraries)  
+* [NodeMCU settings](#nodemcu-settings)  
 * [Wiring](#wiring)  
 * [Credits](#credits) 
-* [Pictures](#pictures)
+* [Pictures](#pictures)  
 
+# Features  
+-reading / writing cards  
+-autosave of last card read to %Last_read% file (to prevent losing it if battery goes down before saving to file)  
+-saving / loading card data using internal memory  
+-file management (rename/delete/overwrite)  
+-device lock, button combination unlocking  
+>Main menu -> Settings -> Lock -> Toggle  
+>Main menu -> Settings -> Lock -> Set combination  
+  
+
+ **Additional user interface features**  
+ -indicator in the bottom-right corner showing whether any rfid data is ready for writing (empty/card/some file)  
+ -debugging of A0 (analog pin) input for buttons calibration   
+ -display of board/memory/sketch/chip/sdk related data  
+ >Main menu -> Settings -> Debugging -> Buttons calibration view
+ >Main menu -> Settings -> Debugging -> Info  
+ 
+ # Bugs  
+-when powered by the battery then the buttons might potentially misbehave when voltage of the battery goes down (which gradually happens over time)  
+>I'll fix it soon, I'll probably have to add 2 resistors to the build (probably 2x10k or similar relatively high resistance ones)
+The code already automatically calibrates expected input per each button, now it just has to save/load these settings which could
+lead to complications if by some chance user connected it through USB for a change. That's why the additional resistors will be connected at the 
+Vin<->Digital_input_pin<->GND, digital input pin will indicate that the device is powered through the battery, therefore settings will be saved/loaded
+which will not happen when it's powered by USB (which provides stable voltage).
+
+ 
 
 # Parts used 
 -NodeMCU (version with CP2102)  
@@ -32,6 +61,8 @@
 -[ESP8266 OLED SSD1306](https://github.com/ThingPulse/esp8266-oled-ssd1306/)  
 -[LinkedList](https://github.com/ivanseidel/LinkedList)  
 
+# NodeMCU settings  
+![](https://i.imgur.com/UzOtdIi.png)
 
 # Wiring
 

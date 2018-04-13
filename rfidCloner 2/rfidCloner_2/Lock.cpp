@@ -36,7 +36,7 @@ String Lock::GetFormattedCorrectSequence(String delimeter){
   if(correct_sequence.length() > 0){
     for(int i=0; i<correct_sequence.length(); i++){
       if(i>0){ret += delimeter;}
-      ret += buttons.GetButtonName(correct_sequence[i]);
+      ret += buttons.GetButtonName(String(correct_sequence[i]));
     }
   }else{
     ret = "Empty";

@@ -11,6 +11,7 @@ extern "C" {
 
 #include "Buttons.h"
 extern Buttons buttons;
+extern char *button_ids;
 
 #include "Notification.h"
 extern Notification notification;

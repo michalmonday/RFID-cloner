@@ -20,6 +20,8 @@ struct ButtonMap{
   std::function<void()> onRelease;
 };
 
+
+
 ButtonMap buttonMap[BUTTON_COUNT] = {
  100.0, BUTTON_UP, "UP", [](){},
  191.0, BUTTON_DOWN, "DOWN", [](){},
@@ -29,9 +31,9 @@ ButtonMap buttonMap[BUTTON_COUNT] = {
  871.0, BUTTON_NO, "DECLINE", [](){},
 };
 
-Buttons::Buttons(){
+void Buttons::Init(){
   for(int i = 0; i< BUTTON_COUNT; i++){
-    initialExpectedRead[i] = buttonMap[i].expected_read;
+    initialExpectedRead[i] = int(buttonMap[i].expected_read);
   }
 }
 
@@ -111,7 +113,7 @@ float Buttons::GetButtonExpectedRead(int button_id){
   return  buttonMap[GetButtonIndex(button_id)].expected_read;
 }
 
-float Buttons::GetButtonInitialExpectedRead(int button_id){
+int Buttons::GetButtonInitialExpectedRead(int button_id){
   return initialExpectedRead[GetButtonIndex(button_id)];
 }
 
@@ -125,13 +127,7 @@ String Buttons::GetButtonName(String button_id){
 }
 
 String Buttons::GetButtonName(char button_id){
-  char buff[2] = {button_id, 0};
-  return GetButtonName((int)strtol(buff, NULL, 10));
-}
-
-String Buttons::GetButtonName(char* button_id){
-  char buff[2] = {button_id[0], 0};
-  return GetButtonName((int)strtol(buff, NULL, 10));
+  return GetButtonName((int)button_id);
 }
 
 String Buttons::GetLastButtonName(){

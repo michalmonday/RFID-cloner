@@ -66,7 +66,8 @@ void setup() {
   Serial.begin(115200);
   //delay(10000);
   Serial.println("Starting");
-  
+
+  buttons.Init();
   files.Init();
   //files.Format();
   //files.DumpDirToSerial("/");

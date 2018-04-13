@@ -382,7 +382,7 @@ void MenuOrganizer::Init(){
       AddOption(settingsMenu, MenuOption{"Lock", true,[this](){
           ClearOptions(lockMenu);
           int option_index_toggle_lock = 0;
-          AddOption(lockMenu, MenuOption{"Toggle " + (lock.GetState() == true ? String("[On]") : String("[Off]")), true, [this](){
+          AddOption(lockMenu, MenuOption{"Toggle " + (lock.GetState() == true ? String("[On]") : String("[Off]")), true, [this, option_index_toggle_lock](){
               bool state = lock.GetState();
               if(state == false){
                 Notify("Lock is turned on.\nCorrect combination:\n" + lock.GetFormattedCorrectSequence("-"), 0);

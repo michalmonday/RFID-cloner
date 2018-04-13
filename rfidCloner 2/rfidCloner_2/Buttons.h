@@ -28,7 +28,7 @@ struct Calibrator{
 class Buttons
 {
 public: 
-  Buttons();
+  void Init();
   
   void Update();
   int GetLast(){return last_button_pressed;}
@@ -48,7 +48,7 @@ public:
   String GetLastButtonName();
 
   float GetButtonExpectedRead(int button_id);
-  float GetButtonInitialExpectedRead(int button_id);
+  int GetButtonInitialExpectedRead(int button_id);
   String GetButtonName(int button_id);
   String GetButtonName(String button_id);
   String GetButtonName(char button_id);
@@ -56,6 +56,7 @@ public:
 
   void ResetFunctions();
   void SetButtonFunction(int button_id, std::function<void()> func);
+
 private:
   int last_analog_input = 0;
   int last_button_pressed = 0;
@@ -64,14 +65,13 @@ private:
   unsigned long last_button_passed_limiter_time = 0;
   int last_button_passed_limiter = last_button_passed_limiter;
 
-  float initialExpectedRead[BUTTON_COUNT] = {0};
+  int initialExpectedRead[BUTTON_COUNT] = {0};
 
 
   Calibrator cali = Calibrator();
   void ResetCalibrator(){cali.button = 0; cali.diff_sum = 0.0; cali.frame_count = 0;}
 
   int GetButtonIndex(int button_id);
-  
 };
 
 

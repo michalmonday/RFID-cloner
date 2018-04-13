@@ -241,10 +241,11 @@ void GUI::Update(){
 
 void GUI::DrawButtonsCalibration(){
   display.setTextAlignment(TEXT_ALIGN_LEFT);
+  char button_ids[BUTTON_COUNT] = {BUTTON_UP, BUTTON_DOWN, BUTTON_LEFT, BUTTON_RIGHT, BUTTON_YES, BUTTON_NO};
   for(int i=0; i<BUTTON_COUNT; i++){
-    int val_current = int(buttons.GetButtonExpectedRead(i));
-    int val_initial = int(buttons.GetButtonInitialExpectedRead(i));
-    String n = buttons.GetButtonName(i);
+    int val_current = int(buttons.GetButtonExpectedRead(button_ids[i]));
+    int val_initial = int(buttons.GetButtonInitialExpectedRead(button_ids[i]));
+    String n = buttons.GetButtonName(button_ids[i]);
     
     display.drawString(0, i*10 + 1, n + " - " + val_current + ":" + val_initial);
   }
