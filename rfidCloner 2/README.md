@@ -26,7 +26,7 @@
  -indicator in the bottom-right corner showing whether any rfid data is ready for writing (empty/card/some file)  
  -debugging of A0 (analog pin) input for buttons calibration   
  -display of board/memory/sketch/chip/sdk related data  
- >Main menu -> Settings -> Debugging -> Buttons calibration view
+ >Main menu -> Settings -> Debugging -> Buttons calibration view  
  >Main menu -> Settings -> Debugging -> Info  
  
  # Bugs  
