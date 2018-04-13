@@ -32,7 +32,7 @@
  >Main menu -> Settings -> Debugging -> Info  
  
  # Bugs  
--please let me know if you encounter any  
+Please let me know if you encounter any  
 
  
 
