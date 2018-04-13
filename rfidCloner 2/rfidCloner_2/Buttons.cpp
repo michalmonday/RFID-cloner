@@ -1,9 +1,8 @@
 #include "Buttons.h"
 
 
-#define THRESHOLD_INPUT 50.0                 // if input > THRESHOLD then key was pressed
+#define THRESHOLD_INPUT 20.0                 // if input > THRESHOLD then key was pressed
 #define INPUT_TOLERANCE 20.0                 //so if 120 or 80 will be received when BUTTON_UP is pressed then it will be accepted anyway
-
 
 /*
     It appears that if a battery power source is used instead of using PC USB connection then the buttons become less reliable.
@@ -23,6 +22,7 @@ struct ButtonMap{
 
 
 ButtonMap buttonMap[BUTTON_COUNT] = {
+ 50.0, BUTTON_NONE, "NONE", [](){},
  100.0, BUTTON_UP, "UP", [](){},
  191.0, BUTTON_DOWN, "DOWN", [](){},
  315.0, BUTTON_LEFT, "LEFT", [](){},

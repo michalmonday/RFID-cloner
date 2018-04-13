@@ -9,8 +9,10 @@
 * [Required libraries](#required-libraries)  
 * [NodeMCU settings](#nodemcu-settings)  
 * [Wiring](#wiring)  
+* [Additional information, safety and contact](#additional-information,-safety-and-contact)  
 * [Credits](#credits) 
 * [Pictures](#pictures)  
+
 
 # Features  
 -reading / writing cards  
@@ -30,12 +32,7 @@
  >Main menu -> Settings -> Debugging -> Info  
  
  # Bugs  
--when powered by the battery then the buttons might potentially misbehave when voltage of the battery goes down (which gradually happens over time)  
->I'll fix it soon, I'll probably have to add 2 resistors to the build (probably 2x10k or similar relatively high resistance ones)
-The code already automatically calibrates expected input per each button, now it just has to save/load these settings which could
-lead to complications if by some chance user connected it through USB for a change. That's why the additional resistors will be connected at the 
-Vin<->Digital_input_pin<->GND, digital input pin will indicate that the device is powered through the battery, therefore settings will be saved/loaded
-which will not happen when it's powered by USB (which provides stable voltage).
+-please let me know if you encounter any  
 
  
 
@@ -45,8 +42,8 @@ which will not happen when it's powered by USB (which provides stable voltage).
 -SSD1306 OLED display (i2C - 4 pin version)  
 -MIFARE 1K RFID card (with changeable UID, 13.56Mhz)  
 -some RFID card to copy (only 13.56Mhz cards can be read/written by this particular card reader module)  
--buttons (6 of them)  
--resistors (4.7k, 2.2k, 2x1k, 680, 470, 220)  
+-buttons (7 of them)  
+-resistors (10k, 4.7k, 2.2k, 2x1k, 680, 470, 220)  
 -cables  
 -switch  
 -soldering equipment  
@@ -92,13 +89,19 @@ I didn't do it but in general it is good idea (e.g. for reliability) to connect 
   
 (The graph below shows that only 1 3.3V pin was used but other pins could also be used if that's more comfortable to solder. The same applies to GND pins. The battery must be connected to Vin pin though because it has higher voltage ~4.8V and has to go through regulator.)  
   
-![](https://i.imgur.com/qnWrLDe.png)
+![](https://i.imgur.com/01dBMua.png)
 
+
+# Additional information, safety and contact   
+Always make sure to **switch off** the battery before connecting device through USB to PC.  
+There is no step-by-step tutorial yet, you could contact me on discord (michalmonday#3687) if you'd like to build it but aren't sure about something.  
 
 # Credits  
 The creators of libraries and boards/modules used in this project. RFID functionality is based on the [RFID library](https://github.com/miguelbalboa/rfid/) created by Miguel Balboa and other contributors. When trying to implement menu I was relying on the [esp8266_deauther](https://github.com/spacehuhn/esp8266_deauther/blob/master/esp8266_deauther/DisplayUI.cpp) project created by spacehuhn.
 
 # Pictures  
+(It didn't have 10k resistor yet, in case if someone used these images for wiring reference.)    
+  
 ![](https://i.imgur.com/2CDCzr6.jpg)  
 ![](https://i.imgur.com/7RNlH2X.jpg)  
 ![](https://i.imgur.com/NA8duDO.jpg)  

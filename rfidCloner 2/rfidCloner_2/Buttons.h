@@ -12,7 +12,9 @@
 #define BUTTON_YES 5
 #define BUTTON_NO 6
 
-#define BUTTON_COUNT 6
+#define BUTTON_NONE 0
+
+#define BUTTON_COUNT 7
 
 #define STATE_UP 0
 #define STATE_DOWN 1
