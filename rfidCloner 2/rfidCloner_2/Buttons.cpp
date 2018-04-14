@@ -22,7 +22,7 @@ struct ButtonMap{
 
 
 ButtonMap buttonMap[BUTTON_COUNT] = {
- 50.0, BUTTON_NONE, "NONE", [](){},
+ 50.5, BUTTON_NONE, "NONE", [](){},
  100.0, BUTTON_UP, "UP", [](){},
  191.0, BUTTON_DOWN, "DOWN", [](){},
  315.0, BUTTON_LEFT, "LEFT", [](){},

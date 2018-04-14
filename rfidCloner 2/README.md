@@ -9,7 +9,7 @@
 * [Required libraries](#required-libraries)  
 * [NodeMCU settings](#nodemcu-settings)  
 * [Wiring](#wiring)  
-* [Additional information, safety and contact](#additional-information,-safety-and-contact)  
+* [Additional information](#additional-information)  
 * [Credits](#credits) 
 * [Pictures](#pictures)  
 
@@ -32,25 +32,27 @@
  >Main menu -> Settings -> Debugging -> Info  
  
  # Bugs  
--please let me know if you encounter any  
+Please let me know if you encounter any  
 
  
 
-# Parts used 
--NodeMCU (version with CP2102)  
--RC522 RFID reader module  
--SSD1306 OLED display (i2C - 4 pin version)  
--MIFARE 1K RFID card (with changeable UID, 13.56Mhz)  
+# Parts used  
+-NodeMCU (version with CP2102) (e.g. [ebay link](https://www.ebay.co.uk/itm/NodeMcu-ESP8266-ESP-12E-CH340-WIFI-4MB-CP2102-Lua-USB-Arduino-Raspberry-PI-IoT/263103158702))  
+-RC522 RFID reader module (e.g. [ebay link](https://www.ebay.co.uk/itm/RFID-RC522-Mifare-Card-reader-Arduino-or-raspberry-pi-UK-Stock/161862594146))  
+-SSD1306 OLED display (i2C - 4 pin version) (e.g. [ebay link](https://www.ebay.co.uk/itm/I2C-OLED-Display-128X64-0-96-SSD1306-For-Arduino-Raspberry-Pi-ESP8266-etc/172736606184))  
+-MIFARE 1K RFID card with changeable UID - 13.56Mhz (e.g. [ebay link](https://www.ebay.co.uk/itm/5PCS-UID-card-Changeable-with-Phone-0-Sector-0-block-Rewritable-M1-IC-card-UK/272720001067))  
 -some RFID card to copy (only 13.56Mhz cards can be read/written by this particular card reader module)  
--buttons (7 of them)  
--resistors (10k, 4.7k, 2.2k, 2x1k, 680, 470, 220)  
--cables  
--switch  
--soldering equipment  
+-7 buttons  (e.g. [ebay link](https://www.ebay.co.uk/itm/100Pcs-6-6-5-mm-4Pin-Tactile-Touch-Push-Button-Switch-Tact-Switches-6-X-6-X-5mm/191737340275))  
+-resistors (10k, 4.7k, 2.2k, 2x1k, 680, 470, 220) (e.g. [ebay link](https://www.ebay.co.uk/itm/Resistors-Metal-Film-300-Pack-10-each-30-values-1-4w-1-Kit-Assortment-Mix-UK/111148362636))  
+-prototyping board (e.g. [ebay link](https://www.ebay.co.uk/itm/5Pcs-Double-Side-PCB-Prototype-Circuit-Printed-Soldring-Track-Strip-Board-5x7cm/262317473034))  
+-cables (e.g. [ebay link](https://www.ebay.co.uk/itm/30AWG-Insulated-Silver-Plated-Single-Core-Copper-PCB-0-25mm-Kynar-Wrapping-Wire/263504549866))  
+-switch  (e.g. [ebay link](https://www.ebay.co.uk/itm/40pcs-3-Terminals-ON-ON-2-Positions-SPDT-Electronic-Push-Button-Sliding-Switches/183144329954))  
+-soldering equipment (soldering iron, tin, holder)  
 -hot glue (or tape)  
--3 AAA batteries (could be 3.7 li-po flat battery or any other battery having over 3.3V that doesn't provide more voltage than NodeMCU can accept using Vin pin)  
--2 pin dupont connector (for easier battery replacement/removal)    
-
+-3.7V li-po battery with charger ([ebay link](https://www.aliexpress.com/item/4pcs-3-7V-JJRC-H31-400mAh-3-7V-30C-Lipo-Battery-and-4in1-Battery-charger-box/32831397411.html)) (or just 3 AAA batteries)  
+-2 pin dupont connector (for easier battery replacement/removal). I used [these](https://www.ebay.co.uk/itm/Connector-Plug-Male-Wire-560pcs-Awg-Jumper-Pin-Header-18-26-Kit-Crimp-Dupont/292431010145)    
+>See Asian ebay/aliexpress listings for cheaper alternatives.  
+   
 
 
 # Required libraries  
@@ -92,7 +94,7 @@ I didn't do it but in general it is good idea (e.g. for reliability) to connect 
 ![](https://i.imgur.com/01dBMua.png)
 
 
-# Additional information, safety and contact   
+# Additional information   
 Always make sure to **switch off** the battery before connecting device through USB to PC.  
 There is no step-by-step tutorial yet, you could contact me on discord (michalmonday#3687) if you'd like to build it but aren't sure about something.  
 
@@ -100,8 +102,15 @@ There is no step-by-step tutorial yet, you could contact me on discord (michalmo
 The creators of libraries and boards/modules used in this project. RFID functionality is based on the [RFID library](https://github.com/miguelbalboa/rfid/) created by Miguel Balboa and other contributors. When trying to implement menu I was relying on the [esp8266_deauther](https://github.com/spacehuhn/esp8266_deauther/blob/master/esp8266_deauther/DisplayUI.cpp) project created by spacehuhn.
 
 # Pictures  
-(It didn't have 10k resistor yet, in case if someone used these images for wiring reference.)    
-  
+**Most recent pictures**  
+![](https://i.imgur.com/IgH1A0L.png)  
+![](https://i.imgur.com/5ZSVX3p.png)  
+![](https://i.imgur.com/b0DXIjV.png)  
+![](https://i.imgur.com/Qw5NgJn.png)  
+![](https://i.imgur.com/4g8NkTs.png)  
+
+**Previous pictures (using 3xAAA batteries)**  
+(It didn't have 10k resistor yet, in case if someone used these images for wiring reference.)  
 ![](https://i.imgur.com/2CDCzr6.jpg)  
 ![](https://i.imgur.com/7RNlH2X.jpg)  
 ![](https://i.imgur.com/NA8duDO.jpg)  
