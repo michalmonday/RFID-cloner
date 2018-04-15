@@ -2,7 +2,7 @@
 
 
 #define THRESHOLD_INPUT 20.0                 // if input > THRESHOLD then key was pressed
-#define INPUT_TOLERANCE 20.0                 //so if 120 or 80 will be received when BUTTON_UP is pressed then it will be accepted anyway
+#define INPUT_TOLERANCE 0.12                 //so if 112 or 88 will be received when BUTTON_UP is pressed then it will be accepted anyway
 
 /*
     It appears that if a battery power source is used instead of using PC USB connection then the buttons become less reliable.
@@ -46,8 +46,8 @@ void Buttons::Update(){
     }
     
     for(int i = 0; i < BUTTON_COUNT; i++){
-      float lower_border = buttonMap[i].expected_read - INPUT_TOLERANCE;
-      float higher_border = buttonMap[i].expected_read + INPUT_TOLERANCE;
+      float lower_border = buttonMap[i].expected_read - buttonMap[i].expected_read * INPUT_TOLERANCE;
+      float higher_border = buttonMap[i].expected_read + buttonMap[i].expected_read * INPUT_TOLERANCE;
       if(last_analog_input >= lower_border && last_analog_input <= higher_border){
         last_button_pressed = buttonMap[i].button_id;
 

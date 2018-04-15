@@ -115,5 +115,3 @@ The creators of libraries and boards/modules used in this project. RFID function
 ![](https://i.imgur.com/7RNlH2X.jpg)  
 ![](https://i.imgur.com/NA8duDO.jpg)  
 ![](https://i.imgur.com/Sljwq1J.jpg)  
-
-
