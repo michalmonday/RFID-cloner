@@ -39,7 +39,7 @@ Please let me know if you encounter any
 # Parts used  
 -NodeMCU (version with CP2102) (e.g. [ebay link](https://www.ebay.co.uk/itm/NodeMcu-ESP8266-ESP-12E-CH340-WIFI-4MB-CP2102-Lua-USB-Arduino-Raspberry-PI-IoT/263103158702))  
 -RC522 RFID reader module (e.g. [ebay link](https://www.ebay.co.uk/itm/RFID-RC522-Mifare-Card-reader-Arduino-or-raspberry-pi-UK-Stock/161862594146))  
--SSD1306 OLED display (i2C - 4 pin version) (e.g. [ebay link](https://www.ebay.co.uk/itm/I2C-OLED-Display-128X64-0-96-SSD1306-For-Arduino-Raspberry-Pi-ESP8266-etc/172736606184))  
+-SSD1306 OLED 1.3" display (i2C - 4 pin version) (e.g. [ebay link](https://www.ebay.co.uk/itm/1-3-128x64-IIC-I2C-SPI-OLED-Display-Module-for-Arduino-White-Blue-/282358769160))  
 -MIFARE 1K RFID card with changeable UID - 13.56Mhz (e.g. [ebay link](https://www.ebay.co.uk/itm/5PCS-UID-card-Changeable-with-Phone-0-Sector-0-block-Rewritable-M1-IC-card-UK/272720001067))  
 -some RFID card to copy (only 13.56Mhz cards can be read/written by this particular card reader module)  
 -7 buttons  (e.g. [ebay link](https://www.ebay.co.uk/itm/100Pcs-6-6-5-mm-4Pin-Tactile-Touch-Push-Button-Switch-Tact-Switches-6-X-6-X-5mm/191737340275))  
