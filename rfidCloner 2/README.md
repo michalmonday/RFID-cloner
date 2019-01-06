@@ -88,7 +88,11 @@ I didn't do it but in general it is good idea (e.g. for reliability) to connect 
 | --- | --- | --- |
 | Vin | Dupont 2-pin connector + Switch | V+ |
 | GND | Dupont 2-pin connector | V- |
-  
+
+Hand-drawn diagram: [Link](https://i.imgur.com/01dBMua.png)  
+
+Fritzing diagram:  
+
 ![](https://i.imgur.com/a5x5Ri7.png)
 
 
