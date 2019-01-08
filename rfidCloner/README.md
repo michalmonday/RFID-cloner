@@ -27,6 +27,8 @@ After turning it on the red LED should be on which just indicates that the devic
 
 # Wiring
 
+![wiring-image](https://i.imgur.com/KL9VJr6.png)
+
 | Arduino Pro Micro | MFRC522 |
 | --- | --- |
 | RST | RST |
@@ -48,9 +50,6 @@ After turning it on the red LED should be on which just indicates that the devic
 | 4 | 1k resistor + yellow LED | GND |
 | 5 | 1k resistor + green LED | GND |
 | RAW | 1k resistor + red LED | GND |
-
-**Batteries:**
-I used 3 AA batteries (1.5V each) in "Series" connection to provide 4.5V to the device. Check this [image](http://www.12voltbattery.info/images/content/batteryWireDiagram.jpg) to see the principle on how to connect the batteries.
 
 # DIY guide
 1. Hot glue the Arduino to the back of the card reader module.   
