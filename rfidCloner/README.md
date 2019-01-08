@@ -27,7 +27,7 @@ After turning it on the red LED should be on which just indicates that the devic
 
 # Wiring
 
-![wiring-image](https://i.imgur.com/KL9VJr6.png)
+![wiring-image](https://i.imgur.com/nfwIkFy.png)
 
 | Arduino Pro Micro | MFRC522 |
 | --- | --- |
