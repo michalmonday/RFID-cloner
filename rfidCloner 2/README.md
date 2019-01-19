@@ -68,10 +68,10 @@ Please let me know if you encounter any
 | NodeMCU | RFID-RC522 |
 | --- | --- |
 | D3 | RST |
-| D5 | SPI SS |
-| D6 | SPI MOSI |
-| D7 | SPI MISO |
-| D8 | SPI SCK |
+| D5 | SPI SCK |
+| D6 | SPI MISO |
+| D7 | SPI MOSI |
+| D8 | SPI SS |
 | GND | GND |
 | 3.3V | 3.3V |
 
