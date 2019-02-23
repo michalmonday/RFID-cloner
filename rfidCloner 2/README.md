@@ -93,7 +93,9 @@ Hand-drawn diagram: [Link](https://i.imgur.com/01dBMua.png)
 
 Fritzing diagram:  
 
-![](https://i.imgur.com/a5x5Ri7.png)
+The order of resistors between buttons matters.  The order of 3V3 (red wire) between buttons does not matter, as long as each button (and 10K resistor) is connected to 3V3 it will be good.  
+
+![diagram image](https://i.imgur.com/a5x5Ri7.png)
 
 
 # Additional information   
