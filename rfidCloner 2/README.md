@@ -10,6 +10,7 @@
 * [NodeMCU settings](#nodemcu-settings)  
 * [Wiring](#wiring)  
 * [Additional information](#additional-information)  
+* [Future](#future)  
 * [Credits](#credits) 
 * [Pictures](#pictures)  
 
@@ -101,6 +102,15 @@ The order of resistors between buttons matters.  The order of 3V3 (red wire) bet
 # Additional information   
 Always make sure to **switch off** the battery before connecting device through USB to PC.  
 There is no step-by-step tutorial yet, you could contact me on discord (michalmonday#3687) if you'd like to build it but aren't sure about something.  
+
+# Future  
+I am planning to make a PCB that will be used instead of the prototyping board. The idea is to make the device as big in lenght and width as RC522 module. I hope that with 3x30x40mm battery it will look much better. It should be also easier to assemble because there will be no need to cut wires, there will be some small SMD components but it shouldn't be a problem using normal soldering iron with pointed tip, tweezers and preferably 0.3mm solder. It will require FT232RL serial adapter to flash Esp-12F. The current state of design can be seen here:  
+https://easyeda.com/michalmonday17/rfid-cloner-without-cp2102
+
+It wasn't tested yet, I'm waiting for all the parts to arrive, I'll probably write a small guide if it will work.  
+
+I think that the PCB would be much better if it had CP2102 chip so it could be programmed through micro USB just like NodeMcu, but it would require hot air station and I am too afraid that I will mess something up in design. Once I get the "non-CP2102" version to work, I'll probably try to make one with CP2102.  
+
 
 # Credits  
 The creators of libraries and boards/modules used in this project. RFID functionality is based on the [RFID library](https://github.com/miguelbalboa/rfid/) created by Miguel Balboa and other contributors. When trying to implement menu I was relying on the [esp8266_deauther](https://github.com/spacehuhn/esp8266_deauther/blob/master/esp8266_deauther/DisplayUI.cpp) project created by spacehuhn.
