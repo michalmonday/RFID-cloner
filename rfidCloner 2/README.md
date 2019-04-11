@@ -9,7 +9,7 @@
 
 # Devices 
 
-Initially I created a device with [NodeMCU and prototyping board](https://github.com/michalmonday/RFID-cloner/wiki/NodeMCU-with-prototyping-board-device).   
+Initially I created a device with NodeMCU and prototyping board. See [this wiki page](https://github.com/michalmonday/RFID-cloner/wiki/NodeMCU-with-prototyping-board-device) for details about it.    
 <img src="https://camo.githubusercontent.com/641823241b7dda7315d9dcba9ab2433322982fda/68747470733a2f2f692e696d6775722e636f6d2f4e34426a4a77652e6a7067" width="400" />   
 
 Then I designed a PCB to make it smaller and better looking. See [this wiki page](https://github.com/michalmonday/RFID-cloner/wiki/Custom-PCB-with-Esp-12F-device-(first-version)) for details about it.  
