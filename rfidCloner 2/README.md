@@ -4,7 +4,6 @@
 * [Features](#features)  
 * [Bugs](#bugs)  
 * [Required libraries](#required-libraries)  
-* [Future](#future)  
 * [Credits](#credits) 
 
 
