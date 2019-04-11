@@ -3,7 +3,8 @@
 
 #include <Arduino.h>
 #include <Wire.h>  // Only needed for Arduino 1.6.5 and earlier
-#include "SSD1306Wire.h" // legacy include: `#include "SSD1306.h"
+//#include "SSD1306Wire.h" // legacy include: `#include "SSD1306.h"
+#include "SH1106.h"
 
 extern "C" {
   #include "user_interface.h"

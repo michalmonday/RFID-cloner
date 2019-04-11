@@ -1,6 +1,7 @@
 #include "GUI.h"
 
-SSD1306Wire display(0x3c, D1, D2); // D1 D2
+//SSD1306Wire display(0x3c, D1, D2); // D1 D2
+SH1106 display(0x3c, D1, D2);
 
 #include "images\intro.h"
 
@@ -306,13 +307,3 @@ void GUI::Update(){
 void GUI::SetBrightness(int val){
   display.setBrightness(val);
 }
-
-
-
-
-
-
-
-
-
-
