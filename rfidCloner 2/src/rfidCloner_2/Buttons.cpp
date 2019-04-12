@@ -19,9 +19,20 @@ struct ButtonMap{
   std::function<void()> onRelease;
 };
 
-
-
+// tested with the new pcb
 ButtonMap buttonMap[BUTTON_COUNT] = {
+ 44.5, BUTTON_NONE, "NONE", [](){},
+ 82.0, BUTTON_UP, "UP", [](){},
+ 150.0, BUTTON_DOWN, "DOWN", [](){},
+ 243.0, BUTTON_LEFT, "LEFT", [](){},
+ 342.0, BUTTON_RIGHT, "RIGHT", [](){},
+ 480.0, BUTTON_YES, "ACCEPT", [](){},
+ 660.0, BUTTON_NO, "DECLINE", [](){},
+};
+
+/*
+ * // tested with nodemcu+prototyping board version
+ * ButtonMap buttonMap[BUTTON_COUNT] = {
  50.5, BUTTON_NONE, "NONE", [](){},
  100.0, BUTTON_UP, "UP", [](){},
  191.0, BUTTON_DOWN, "DOWN", [](){},
@@ -29,7 +40,7 @@ ButtonMap buttonMap[BUTTON_COUNT] = {
  449.0, BUTTON_RIGHT, "RIGHT", [](){},
  629.0, BUTTON_YES, "ACCEPT", [](){},
  871.0, BUTTON_NO, "DECLINE", [](){},
-};
+};*/
 
 void Buttons::Init(){
   for(int i = 0; i< BUTTON_COUNT; i++){
@@ -155,14 +166,3 @@ void Buttons::SetButtonFunction(int button_id, std::function<void()> func){
   Serial.println("Buttons::GetButtonName - NONE FOUND - button_id=" + String(button_id));
 }
 */
-
-
-
-
-
-
-
-
-
-
-
