@@ -23,6 +23,7 @@ void GUI::Init(){
   init_time = millis();
 
   gui_mode = MODE_INTRO;    
+  //gui_mode = MODE_BUTTON_CALIBRATION_VIEW;
 }
 
 void GUI::FlipScreenVertically(){

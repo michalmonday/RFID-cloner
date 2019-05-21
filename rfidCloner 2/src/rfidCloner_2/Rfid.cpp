@@ -57,7 +57,9 @@ String Rfid::GetLastReadSourceType(){
   return src;
 }
 
-
+byte * Rfid::GetUID(){
+  return card.UID;
+}
 
 void Rfid::Update(){
   if(request_status == REQUESTED_READ){
@@ -263,14 +265,3 @@ void Rfid::DumpToSerial(){
     Serial.println();
   }
 }
-
-
-
-
-
-
-
-
-
-
-

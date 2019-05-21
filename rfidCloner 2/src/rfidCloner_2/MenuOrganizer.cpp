@@ -138,6 +138,7 @@ void MenuOrganizer::Init(){
 
   
   Serial.println("MenuOrganizer::Init - 1");
+  // option 0
   AddOption(mainMenu, MenuOption{"Read card\0", true, [this](){
       rfid.RequestReadCard();
       
@@ -154,6 +155,7 @@ void MenuOrganizer::Init(){
           ActivateOption(mainMenu, 1);
           ActivateOption(mainMenu, 2);
           ActivateOption(mainMenu, 3);
+          ActivateOption(mainMenu, 4);
           
           Notify("Success\n:)", NOTIFICATION_TIME);
           //notification.SetConditionalFunction([notification](){
@@ -168,6 +170,7 @@ void MenuOrganizer::Init(){
    }});
   
   Serial.println("MenuOrganizer::Init - 2");
+  // option 1
   AddOption(mainMenu, MenuOption{"Write card\0", false, [this](){
       rfid.RequestWriteCard();
       
@@ -185,6 +188,7 @@ void MenuOrganizer::Init(){
         });  
   }});
 
+  // option 2
   AddOption(mainMenu, MenuOption{"Dump to serial", false, [this](){
       Notify("Open serial monitor\nand press ok...", 0);
       notification.OnAccept(0, [this, rfid](){rfid.DumpToSerial(); Notify(1, "Success\nCheck serial monitor\n:)", 1000);});          
@@ -195,6 +199,7 @@ void MenuOrganizer::Init(){
     }
   });
 
+  // option 3
   AddOption(mainMenu, MenuOption{"Save to memory", false, [this](){
       gui.SetMode(MODE_NAME_PICKER);
       namePicker.OnSuccess([this](){
@@ -212,6 +217,16 @@ void MenuOrganizer::Init(){
     }
   });
 
+  // option 4
+  AddOption(mainMenu, MenuOption{"Show UID", false, [this](){
+      byte * uid = rfid.GetUID();
+      char uid_str[30];
+      sprintf(uid_str, "%X %X %X %X", uid[0], uid[1], uid[2], uid[3]);
+      Notify(uid_str, 0);
+    }
+  });
+
+  // option 5
   AddOption(mainMenu, MenuOption{"Files", true, [this](){        
         ClearOptions(manageFilesMenu);
         Dir dir = SPIFFS.openDir("/rfid");
@@ -242,6 +257,7 @@ void MenuOrganizer::Init(){
                   ActivateOption(mainMenu, 1);
                   ActivateOption(mainMenu, 2);
                   DeactivateOption(mainMenu, 3);
+                  ActivateOption(mainMenu, 4);
                   Notify("Loaded successfully\n:)", NOTIFICATION_TIME);
                   SetMenu(mainMenu);
                 }else{
@@ -331,7 +347,8 @@ void MenuOrganizer::Init(){
     }
   });
   */
-  
+
+  // option 6
   AddOption(mainMenu, MenuOption{"Settings", true, [this](){
       ClearOptions(settingsMenu);
 
@@ -855,5 +872,3 @@ ADC_MODE(ADC_VCC);
 TOUT pin has to be disconnected in this mode.
 Note that by default ADC is configured to read from TOUT pin using analogRead(A0), and ESP.getVCC() is not available.  
 */
-
-

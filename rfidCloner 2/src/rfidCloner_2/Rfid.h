@@ -44,6 +44,8 @@ public:
   unsigned long GetLastReadTime(){return last_read_time;}
   String GetLastReadFileName(){return last_read_file_name;}
   String GetLastReadSourceType();
+
+  byte * GetUID();
 private:
   Card card;
   int read_status = NOT_READY;

@@ -19,7 +19,20 @@ struct ButtonMap{
   std::function<void()> onRelease;
 };
 
-// tested with the new pcb
+
+// tested with the new pcb (2nd device)
+ButtonMap buttonMap[BUTTON_COUNT] = {
+ 39.5, BUTTON_NONE, "NONE", [](){},
+ 77.0, BUTTON_UP, "UP", [](){},
+ 140.0, BUTTON_DOWN, "DOWN", [](){},
+ 233.0, BUTTON_LEFT, "LEFT", [](){},
+ 328.0, BUTTON_RIGHT, "RIGHT", [](){},
+ 463.0, BUTTON_YES, "ACCEPT", [](){},
+ 640.0, BUTTON_NO, "DECLINE", [](){},
+};
+
+/*
+// tested with the new pcb (1st device)
 ButtonMap buttonMap[BUTTON_COUNT] = {
  44.5, BUTTON_NONE, "NONE", [](){},
  82.0, BUTTON_UP, "UP", [](){},
@@ -29,6 +42,7 @@ ButtonMap buttonMap[BUTTON_COUNT] = {
  480.0, BUTTON_YES, "ACCEPT", [](){},
  660.0, BUTTON_NO, "DECLINE", [](){},
 };
+*/
 
 /*
  * // tested with nodemcu+prototyping board version
